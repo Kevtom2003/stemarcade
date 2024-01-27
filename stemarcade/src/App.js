@@ -1,18 +1,18 @@
-import { Stage, Sprite } from '@inlet/react-pixi/index'
+import React from "react";
 import './App.css';
-import wizard from "./wizard.png"
+import {BrowserRouter,Route} from "react-router-dom"
+
+import Home from "./components/teacherHome";
+import TeacherSelect from './components/TeacherSelect';
+import Login from './components/Login';
 
 const App = () => {
   return(
-  <Stage
-  width={300} 
-  height={300} 
-  options={{ 
-  backgroundColor: 0x012b30, 
-  antialias: true 
-  }}>
-    <Sprite image={wizard} x={150} y={150}/>
-  </Stage>
-)}
-
+  <BrowserRouter>
+    <Route path="/home" element={<Home />} />
+    <Route path="/teacherselect" element={<TeacherSelect />} />
+    <Route path="/login" element={<Login/>}/>
+  </BrowserRouter>
+  )
+}
 export default App;
