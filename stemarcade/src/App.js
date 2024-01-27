@@ -1,10 +1,11 @@
-import { Stage } from '@inlet/react-pixi/index'
+import { Stage, Sprite } from '@inlet/react-pixi/index'
 import './App.css';
+import Home from './components/Home';
+import wizard from "./wizard.png"
 
 const App = () => {
   return(
-  <Stage>
-  </Stage>
+  <Home/>
 )}
 
 export default App;
