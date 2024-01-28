@@ -12,6 +12,7 @@ import spacebg from "../images/spacebg.jpg"
 import { Keyboard } from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
 import { useNavigate } from "react-router-dom";
+import './galagaGame.css';
 //import { setTimeout } from "timers/promises";
 
 
@@ -38,7 +39,7 @@ const GalagaGame = () => {
 
     // Strength of the impulse push between two objects
     let bullets = [];
-    let bulletSpeed = 20;
+    let bulletSpeed = 25;
     const aliens = [];
     let hitcount = 0;
 
@@ -61,7 +62,8 @@ const GalagaGame = () => {
     var userScore = 0;
 
     const style = new PIXI.TextStyle({
-      fill: ['#ffffff']
+      fill: ['#ffffff'],
+      fontFamily:"mySecondFont"
 
     });
 
@@ -70,7 +72,7 @@ const GalagaGame = () => {
       fontSize: 100
 
     });
-    const basicText = new PIXI.Text("Score: " + userScore, style);
+    const basicText = new PIXI.Text("Score:   ", style);
 
     basicText.x = 1200;
     basicText.y = 50;
@@ -85,8 +87,8 @@ const GalagaGame = () => {
     problemText.y = 50;
 
     const responseText = new PIXI.Text("", style);
-    problemText.x = 100;
-    problemText.y = 200;
+    // responseText.x = 100;
+    // responseText.y = 200;
 
     const gameOverText = new PIXI.Text("", gameoverstyle);
     gameOverText.x = 100;
@@ -107,7 +109,7 @@ const GalagaGame = () => {
       const screenWidth = app.screen.width;
       const screenHeight = app.screen.height * 0.5;
       const x = Math.random() * (screenWidth - 100);
-      const y = Math.random() * screenHeight;
+      const y = Math.random() * screenHeight + 70;
       const v = Math.random() * 3;
       return { x, y, v };
     }
@@ -253,7 +255,7 @@ const GalagaGame = () => {
     left.press = () => {
       console.log("Moving left");
       //Change the sprite’s velocity when the key is pressed
-      movingLeft = 8;
+      movingLeft = 10;
     };
 
 
@@ -268,7 +270,7 @@ const GalagaGame = () => {
       console.log("Moving left");
       //Change the sprite’s velocity when the key is pressed
       movingLeft = 0;
-      movingRight = 8;
+      movingRight = 10;
     };
 
 
@@ -335,6 +337,7 @@ const GalagaGame = () => {
             if (aliens[j].value === alienVals[qCount]) {
               hitcount += 1;
               score += 2;
+              basicText.text = "Score:   " + score;
               if (hitcount === 5) {
                 problemText.text = "";
                 responseText.text = responseList[qCount];
@@ -364,7 +367,7 @@ const GalagaGame = () => {
           bullets.splice(i, 1);
         }
       }
-      basicText.text = "Score: " + score;
+      
       if (qCount > 2) {
         gameEnd();
       }
