@@ -74,6 +74,16 @@ export default function TeacherOverview({ teacherId }) {
     return label;
   }
 
+  function getColorForCuriosityScore(curiosityScore) {
+    if (curiosityScore === "Low") {
+      return "red";
+    } else if (curiosityScore === "Medium") {
+      return "yellow";
+    } else {
+      return "green";
+    }
+  }
+
   return (
     // <ArcadeOutline >
     <div className="screen">
@@ -162,8 +172,8 @@ export default function TeacherOverview({ teacherId }) {
                     <tr key={student.student_id}>
                       <td>{student.first_name + " " + student.last_name}</td>
                       <td>{student.score}</td>
-                      <td>{student.score >= 30 ? "Yes" : "No"}</td>
-                      <td>{student.progress === 1 ? "Yes" : "No"}</td>
+                      <td style={{ color: student.score >= 30 ? "green" : "red" }}>{student.score >= 30 ? "Yes" : "No"}</td>
+                      <td style={{ color: student.progress === 1 ? "green" : "red" }}>{student.progress === 1 ? "Yes" : "No"}</td>
                       <td>{getCuriosityScore()}</td>
                     </tr>
                   ))}
