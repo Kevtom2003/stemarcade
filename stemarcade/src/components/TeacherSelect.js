@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import ArcadeOutline from "./ArcadeOutline";
 
 export default function TeacherSelect(){
     const [selected, setSelected] = useState('Student');
@@ -21,9 +22,11 @@ export default function TeacherSelect(){
     }, [selected]);
 
     return(
-        <div>
-            <h1>{selected === 'Student' ? '>Student' : 'Student'}</h1>
-            <h1>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
-        </div>
+        <ArcadeOutline style = {{display:"flex", justifyContent: "center", alignItems: "center"}}>
+            <div>
+                <h1>{selected === 'Student' ? '>Student' : 'Student'}</h1>
+                <h1>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
+            </div>
+        </ArcadeOutline>
     )
 }

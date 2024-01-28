@@ -1,0 +1,24 @@
+.arcade-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.arcade-frame {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  object-fit:fill;
+  z-index: 10;
+}
+
+.arcade-screen {
+  position: absolute;
+  top: 0%; /* Adjust based on your frame */
+  left: 0%; /* Adjust based on your frame */
+  right: 15%; /* Adjust based on your frame */
+  bottom: 20%; /* Adjust based on your frame */
+  z-index: 5;
+  overflow: hidden;
+}
