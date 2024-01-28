@@ -3,6 +3,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  z-index: -1;
 }
 
 .arcade-frame {
@@ -19,6 +20,6 @@
   left: 0%; /* Adjust based on your frame */
   right: 15%; /* Adjust based on your frame */
   bottom: 20%; /* Adjust based on your frame */
-  z-index: 5;
+  z-index: -1;
   overflow: hidden;
 }

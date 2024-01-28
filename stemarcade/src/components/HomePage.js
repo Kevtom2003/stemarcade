@@ -35,22 +35,15 @@ export default function TeacherSelect() {
     }, [selected]);
 
     return (
-      <ArcadeOutline
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
           <div
             style={{
               backgroundImage: `url(${bg})`, // Set background image to your animated GIF
               backgroundSize: "contain", // Optional: Adjust the background size
               backgroundPosition: "center",
-              width: "70%",
+              width: "100vw",
               height: "100vh", // Optional: Set the width of the image
               textAlign: "center", // Center horizontally
-              margin: "auto", // Center vertically
-              display: "block",
+              // margin: "auto", // Center vertically
               zIndex: -2, // Remove any extra space below the image
               className: "gif-background",
             }}
@@ -58,8 +51,11 @@ export default function TeacherSelect() {
             <img
               src={logo}
               alt="Your Image Alt Text"
-              width="50%"
-              height="50%"
+              style={{
+                width:"60%",
+              height:"60%",
+              textAlign:"left",
+              }}
             />
             {login === "" && 
                 <div>
@@ -67,9 +63,16 @@ export default function TeacherSelect() {
                     <h1>{selected === "Student" ? ">Student" : "Student"}</h1>
                     <h1>{selected === "Teacher" ? ">Teacher" : "Teacher"}</h1>
                 </div>}
-                {login === 'Student' && <StudentLogin/>}
-                {login === 'Teacher' && <TeacherLogin/>}
+                {login === 'Student' && <div><StudentLogin/> <NotA notA="student" onClick = {() => {setLogin("")}}/></div>}
+                {login === 'Teacher' && <div><TeacherLogin/> <NotA notA = "teacher" onClick={() => {setLogin("")}}/></div>}
           </div>
-      </ArcadeOutline>
     );
+}
+
+function NotA({ notA, onClick }){
+  return(
+    <div className="notA" onClick={onClick}>
+      <h1>Not a {notA}?</h1>
+    </div>
+  )
 }
