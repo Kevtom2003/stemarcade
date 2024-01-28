@@ -52,7 +52,7 @@ export default function TeacherLogin(){
         <div>
             {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
             <h1>Username</h1>
-            <input ref = {inputRef} onChange={(e) => {setUsername(e.target.value)}} className='inputField'></input>
+            <input ref = {inputRef}  onChange={(e) => {setUsername(e.target.value)}} className='inputField'></input>
             <h1>Password</h1>
             <input onChange = {(e) => {setPassword(e.target.value)}} className='inputField'></input>
             {/* <button onClick={handleEnter}>Press me</button> */}
