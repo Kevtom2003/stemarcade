@@ -6,11 +6,10 @@ import TeacherLogin from "./TeacherLogin";
 import StudentLogin from "./StudentLogin";
 
 
-export default function TeacherSelect(){
+export default function TeacherSelect({ onTeacherLogin }){
+
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Student');
-
-    const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
         if(event.keyCode === 40 || event.keyCode === 38){
@@ -42,7 +41,7 @@ export default function TeacherSelect(){
                 </div>
             )}
             { login === "Teacher" && (
-                <TeacherLogin />
+                <TeacherLogin onLogin={onTeacherLogin}/>
             )}
             { login === "Student" && (
                 <StudentLogin />

@@ -2,7 +2,7 @@ import {React, useState, useEffect} from 'react';
 import ArcadeOutline from "./ArcadeOutline";
 import './TeacherOverview.css';
 
-export default function TeacherOverview(){
+export default function TeacherOverview({teacherLogin}){
 
     const [classList, setClassList] = useState(['Nothing here yet']);
     const [assignmentList, setAssignmentList] = useState(['Nothing here yet']);
@@ -11,7 +11,7 @@ export default function TeacherOverview(){
     const [assignmentSelect, setAssignmentSelect] = useState("");
 
     useEffect(() => {
-        fetch(`http:localhost:5000/api/class/`)
+        fetch(`http:localhost:5000/api/class/${teacherLogin}`)
         .then((res) => res.json())
         .then((data) => {
             setClassList(data);
@@ -58,14 +58,17 @@ export default function TeacherOverview(){
                         <tr>
                             <th>Student</th>
                             <th>Score</th>
+                            <th>Completed</th>
                         </tr>
                         <tr>
                             <td>John Doe</td>
                             <td>100</td>
+                            <td>Yes</td>
                         </tr>
                         <tr>
                             <td>Jane Doe</td>
                             <td>90</td>
+                            <td>Yes</td>
                         </tr>
                     </table>
                 </div>

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import InputField from './InputField';
-import { Navigate } from 'react-router-dom';
 
-export default function TeacherLogin(){
+export default function TeacherLogin({ onLogin }){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
 
+    const [teacherId, setTeacherId] = useState("");
     // const handleKeyDown = (event) => {
     //     if(event.keyCode === 13 && username != "" && password != ""){
     //         console.log("submit");
@@ -21,22 +20,35 @@ export default function TeacherLogin(){
     //     }
     // }, []);
 
+    // useEffect(() => {
+    //     if (loggedIn) {
+    //         onLogin(teacherId);
+    //     }
+    // }, [loggedIn]);
+
+    // const setLoginId = (id) => {
+    //     setTeacherId(id);
+    // }
+
 
     const handleEnter = async () => {
         try{
             const res = await fetch(`http://localhost:5000/api/teacher/${username}/${password}`);
             const p = await res.json();
+            console.log(p[0]);
+            onLogin(p[0].teacher_id);
             if(p.length > 0){
+                // setLoginId(p[0].teacher_id);
                 setLoggedIn(true);
             }
-            console.log(p);
+            // console.log(p);
         }catch(err){
             console.error(err);
         }
 
-        if (loggedIn) {
-            Navigate(`/teacher`);
-        }
+        // if (loggedIn) {
+        //     navigate(`/teacher/${p[0].teacher_id}`);
+        // }
     }
     
     // const handleLogin = () => {
