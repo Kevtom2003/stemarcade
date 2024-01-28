@@ -66,7 +66,7 @@ const gameoverstyle = new PIXI.TextStyle({
 });
 const basicText = new PIXI.Text("Score: " + userScore,style);
 
-basicText.x = 450;
+basicText.x = 1200;
 basicText.y = 50;
 
 const tipText = new PIXI.Text("",style);
