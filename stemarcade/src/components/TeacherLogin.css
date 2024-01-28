@@ -1,11 +1,12 @@
 
 .inputField{
     border:0;
-    background-color: black;
+    background-color: transparent;
     color: white;
     caret-color: transparent;
+    font-size: 4vmin;
 
-    margin:5%;
+    margin:1%;
 }
 
 .inputField:focus{

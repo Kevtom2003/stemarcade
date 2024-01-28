@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 body{
     background-color: black;
+    overflow: hidden;
 }
 
 @font-face {
@@ -9,6 +10,24 @@ body{
 }
 
 h1{
-    color: white;
+    color: rgb(255, 206, 28);
     font-family: "myFirstFont";
+    text-shadow: 
+    1px 1px 0px #000,   /* Black shadow for depth */
+    2px 2px 0px #000, /* Lighter yellow for a glowing effect */
+    3px 3px 0px #000;
+}
+
+.gif-background{
+    width: 100vw;
+    height:100vh;
+}
+
+input{
+    position: relative;
+    z-index: 5;
+}
+
+.notA:hover{
+    cursor: pointer;
 }

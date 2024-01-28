@@ -33,32 +33,44 @@ export default function TeacherSelect({ onTeacherLogin }){
     }, [selected]);
 
     return (
-        <ArcadeOutline style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-
-            {login === "" && (
-
-                <div style={{
-                    backgroundImage: `url(${bg})`, // Set background image to your animated GIF
-                    backgroundSize: 'contain', // Optional: Adjust the background size
-                    backgroundPosition: 'center',
-                    width: '70%', // Optional: Set the width of the image
-                    height: 'auto', // Optional: Maintain aspect ratio
-                    textAlign: 'center', // Center horizontally
-                    margin: 'auto', // Center vertically
-                    display: 'block', // Remove any extra space below the image
-                }}>
-                    <img src={logo} alt="Your Image Alt Text" width="50%" height="50%" />
+          <div
+            style={{
+              backgroundImage: `url(${bg})`, // Set background image to your animated GIF
+              backgroundSize: "contain", // Optional: Adjust the background size
+              backgroundPosition: "center",
+              width: "100vw",
+              height: "100vh", // Optional: Set the width of the image
+              textAlign: "center", // Center horizontally
+              // margin: "auto", // Center vertically
+              zIndex: -2, // Remove any extra space below the image
+              className: "gif-background",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Your Image Alt Text"
+              style={{
+                width:"60%",
+              height:"60%",
+              textAlign:"left",
+              }}
+            />
+            {login === "" && 
+                <div>
                     <h1>The sky is the limit.</h1>
-                    <h1>{selected === 'Student' ? '>Student' : 'Student'}</h1>
-                    <h1>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
-                </div>
-            )}
-            {login === "Teacher" && (
-                <TeacherLogin onLogin={onTeacherLogin}/>
-            )}
-            {login === "Student" && (
-                <StudentLogin />
-            )}
-        </ArcadeOutline>
-    )
+                    <h1>{selected === "Student" ? ">Student" : "Student"}</h1>
+                    <h1>{selected === "Teacher" ? ">Teacher" : "Teacher"}</h1>
+                </div>}
+                {login === 'Student' && <div><StudentLogin/> <NotA notA="student" onClick = {() => {setLogin("")}}/></div>}
+                {login === 'Teacher' && <div><TeacherLogin onLogin={onTeacherLogin}/> <NotA notA = "teacher" onClick={() => {setLogin("")}}/></div>}
+          </div>
+    );
+}
+
+function NotA({ notA, onClick }){
+  return(
+    <div className="notA" onClick={onClick}>
+      <h1>Not a {notA}?</h1>
+    </div>
+  )
 }
