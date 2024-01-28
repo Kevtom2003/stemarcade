@@ -1,5 +1,5 @@
 // GalagaGame.js
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
 import {Keyboard} from 'pixi.js-keyboard';
@@ -9,12 +9,18 @@ import { useNavigate } from "react-router-dom";
 
 
 const GalagaGame = () => {
-
-    const navigate = useNavigate();
   const appRef = useRef(null);
 
-  useEffect(() => {
 
+  useEffect(() => {
+    console.log(loading);
+    setTimeout(() => {
+      setLoading(false);
+      console.log("done", loading);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
 // Based somewhat on this article by Spicy Yoghurt
 // URL for further reading: https://spicyyoghurt.com/tutorials/html5-javascript-game-development/collision-detection-physics
 const app = new PIXI.Application({ background: '#111', resizeTo: window });
@@ -24,7 +30,6 @@ document.body.appendChild(app.view);
 // Options for how objects interact
 // How fast the red square moves
 // const movementSpeed = 0.05;
-
 // Strength of the impulse push between two objects
 let bullets = [];
 let bulletSpeed = 15;
@@ -61,7 +66,7 @@ const gameoverstyle = new PIXI.TextStyle({
 });
 const basicText = new PIXI.Text("Score: " + userScore,style);
 
-basicText.x = 450;
+basicText.x = 1200;
 basicText.y = 50;
 
 const tipText = new PIXI.Text("",style);
