@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 import './TeacherLogin.css'
 
 export default function StudentLogin(){
+    const navigate = useNavigate();
+
     const [name, setName] = useState("");
     const [classId, setClassId] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -10,6 +13,7 @@ export default function StudentLogin(){
 
     const handleLogin = () => {
         console.log("Logging in...");
+        navigate("/galagaIntro");
     }
 
     const handleEnter = (e) => {
