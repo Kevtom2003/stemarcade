@@ -8,11 +8,19 @@ import { Text } from 'pixi.js';
 
 
 const GalagaGame = () => {
+  const [loading, setLoading] = useState(true);
   const appRef = useRef(null);
 
 
   useEffect(() => {
+    console.log(loading);
+    setTimeout(() => {
+      setLoading(false);
+      console.log("done", loading);
+    }, 500);
+  }, []);
 
+  useEffect(() => {
 // Based somewhat on this article by Spicy Yoghurt
 // URL for further reading: https://spicyyoghurt.com/tutorials/html5-javascript-game-development/collision-detection-physics
 const app = new PIXI.Application({ background: '#111', resizeTo: window });
