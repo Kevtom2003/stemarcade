@@ -46,7 +46,7 @@ const GalagaGame = () => {
     // Test For Hit
     // A basic AABB check between two different squares
     let questionList = ["100*8 - 3/4*800 + 50*4 = ", "A student is traveling at 15mph for 2 hours, how far does he go?", "(4^2 + 3*8) * (3/4) = "]
-    let responseList = ["Correct! Speaking of 400, the fastest rocket in the world traveled at about \n400,000 kph! Let's try to be fast too, and show these aliens who's boss!", "Right again! Did you know that there are 30 Earth's worth of distance between us and the moon?\nLook how far we've come!", "Awesome! Interesting, because the Sun makes up 99% of our solar system's mass!\nJust like the sun, you're on fire!!"]
+    let responseList = ["Correct! Speaking of 400, the fastest rocket in the world traveled at about \n400,000 kph! Let's try to be fast too, and show these aliens who's boss!", "Right again! Did you know that there are 30 Earth's worth of distance between us \nand the moon? Look how far we've come!", "Awesome! Interesting, because the Sun makes up 99% of our solar system's mass!\nJust like the sun, you're on fire!!"]
     let alienVals = [400, 30, 99, 120, 50]
     function testForHit(object1, object2) {
       const bounds1 = object1.getBounds();
@@ -350,7 +350,7 @@ const GalagaGame = () => {
                   qCount += 1;
                   problemText.text = questionList[qCount];
                   responseText.text = "";
-                }, 4000); // Adjust the duration (in milliseconds) as needed
+                }, 7000); // Adjust the duration (in milliseconds) as needed
 
                 //qCount += 1;
                 //problemText.text = questionList[qCount];
