@@ -5,6 +5,7 @@ import './TeacherLogin.css';
 export default function TeacherLogin(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleKeyDown = (event) => {
         console.log(username, password);
@@ -17,7 +18,7 @@ export default function TeacherLogin(){
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
-        if(inputRef.current){
+        if(inputRef.current && username == "" && password == ""){
             inputRef.current.focus();
         }
 
@@ -34,7 +35,9 @@ export default function TeacherLogin(){
             if(p.length > 0){
                 handleLogin();
             }
-            console.log(p);
+            else{
+                setErrorMessage("Invalid login!");
+            }
         }catch(err){
             console.error(err);
         }
@@ -46,6 +49,7 @@ export default function TeacherLogin(){
 
     return(
         <div>
+            {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
             <h1>Username</h1>
             <input ref = {inputRef} placeholder="teacher username" onChange={(e) => {setUsername(e.target.value)}} className='inputField'></input>
             <h1>Password</h1>
