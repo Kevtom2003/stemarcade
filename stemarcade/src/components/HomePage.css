@@ -21,3 +21,8 @@ h1{
     width: 100vw;
     height:100vh;
 }
+
+input{
+    position: relative;
+    z-index: 5;
+}

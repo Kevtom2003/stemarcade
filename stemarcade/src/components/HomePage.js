@@ -49,8 +49,7 @@ export default function TeacherSelect() {
               width: "70%",
               height: "100vh", // Optional: Set the width of the image
               textAlign: "center", // Center horizontally
-              margin: "auto", // Center vertically
-              display: "block",
+              // margin: "auto", // Center vertically
               zIndex: -2, // Remove any extra space below the image
               className: "gif-background",
             }}
@@ -58,8 +57,11 @@ export default function TeacherSelect() {
             <img
               src={logo}
               alt="Your Image Alt Text"
-              width="50%"
-              height="50%"
+              style={{
+                width:"60%",
+              height:"60%",
+              textAlign:"left",
+              }}
             />
             {login === "" && 
                 <div>
