@@ -14,11 +14,14 @@ export default function StudentLogin(){
 
     const handleEnter = (e) => {
         if(e.keyCode === 13){
+            try{
             const names = name.split(" ");
             const first = names[0];
             const last = names[1];
-
             handleGetStudent(first, last, classId);
+            }catch(err){
+                setErrorMessage("Invalid name");
+            }
         }
     }
 
@@ -35,6 +38,7 @@ export default function StudentLogin(){
             }
         } catch(err){
             console.error(err);
+            setErrorMessage("Invalid login");
         }
     }
         useEffect(() => {
