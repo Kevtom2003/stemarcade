@@ -96,15 +96,30 @@ app.get('/api/assignment_student/:assignment_id', cors(), async (req, res) => {
 
 // CREATE
 // student
-app.post('/api/student/:first_name/:last_name/:class_id', cors(), async (req, res) => {
-    try{
-        const { rows } = await pool.query('INSERT INTO student (first_name, last_name, class_id) VALUES ($1, $2, $3)', [req.params.first_name], [req.params.last_name], [req.params.class_id]);
-        res.send(rows);
+app.post(
+  "/api/student/:first_name/:last_name/:class_id",
+  cors(),
+  async (req, res) => {
+    try {
+      const { first_name, last_name, class_id } = req.params;
+      const query =
+        "INSERT INTO student (first_name, last_name, class_id) VALUES ($1, $2, $3) RETURNING *"; // Assuming you want to return the inserted row
+      const result = await pool.query(query, [first_name, last_name, class_id]);
+
+      // Check if 'rows' is in the result
+      if (result && result.rows) {
+        res.send(result.rows);
+      } else {
+        // Handle the case where 'rows' is not present
+        res.status(500).send("Unexpected result format from the database");
+      }
     } catch (error) {
-        console.error('Error querying database:', error);
-        res.status(500).send('Internal server error');
+      console.error("Error querying database:", error);
+      res.status(500).send("Internal server error");
     }
-});
+  }
+);
+
 
 // assignment
 app.post('/api/assignment/:name/:description/:class_id/:game/:target_score/:due_date', cors(), async (req, res) => {
