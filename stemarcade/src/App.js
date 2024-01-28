@@ -16,8 +16,6 @@ const App = () => {
   useEffect(() => {
     if (teacherId !== "") {
       navigate(`/teacher/${teacherId}`);
-    } else {
-      navigate(`/`);
     }
   }, [teacherId]);
 
