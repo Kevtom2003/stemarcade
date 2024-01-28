@@ -1,0 +1,22 @@
+.retro-input{
+    border:0;
+    background-color: black;
+    color: white;
+    caret-color: transparent;
+
+    margin:5%;
+}
+
+.retro-input:focus{
+    outline: none;
+    border: 5px solid transparent;
+    border-bottom-color: white;
+    border-style: dashed;
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink{
+    50%{
+        border-bottom-color: transparent;
+    }
+}
