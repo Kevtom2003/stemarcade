@@ -24,8 +24,14 @@ const pool = new Pool({
     port: DB_PORT,
 });
 
+// const corsOptions = {
+//     origin: "http://localhost:3000",
+// };
+
 
 const app = express();
+
+// app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -49,6 +55,37 @@ app.get('/api/teacher/:username/:password', cors(), async (req, res) => {
 app.get('/api/student/:first_name/:last_name/:class_id', cors(), async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM student WHERE first_name = $1 AND last_name = $2 AND class_id = $3', [req.params.first_name, req.params.last_name, req.params.class_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// GET
+app.get('/api/class/:teacher_id', cors(), async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM class WHERE teacher_id = $1;', [req.params.teacher_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/api/assignment/:class_id', cors(), async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM assignment WHERE class_id = $1;', [req.params.class_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/api/assignment_student/:assignment_id', cors(), async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT sa.*, s.first_name, s.last_name FROM student_assignment sa JOIN student s ON sa.student_id = s.student_id WHERE sa.assignment_id = $1;', [req.params.assignment_id]);
         res.send(rows);
     } catch (error) {
         console.error('Error querying database:', error);

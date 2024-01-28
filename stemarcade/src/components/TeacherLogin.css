@@ -22,3 +22,13 @@
         border-bottom-color: transparent;
     }
 }
+
+.login-input {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.login-input input {
+    margin-left: 1rem;
+}

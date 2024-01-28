@@ -7,12 +7,10 @@ import StudentLogin from "./StudentLogin";
 import logo from "../images/stemarcadelogo.png";
 import bg from "../images/homepagebg3.gif";
 
-export default function TeacherSelect() {
+export default function TeacherSelect({ onTeacherLogin }){
 
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Student');
-
-    const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
         if (event.keyCode === 40 || event.keyCode === 38) {
@@ -64,7 +62,7 @@ export default function TeacherSelect() {
                     <h1>{selected === "Teacher" ? ">Teacher" : "Teacher"}</h1>
                 </div>}
                 {login === 'Student' && <div><StudentLogin/> <NotA notA="student" onClick = {() => {setLogin("")}}/></div>}
-                {login === 'Teacher' && <div><TeacherLogin/> <NotA notA = "teacher" onClick={() => {setLogin("")}}/></div>}
+                {login === 'Teacher' && <div><TeacherLogin onLogin={onTeacherLogin}/> <NotA notA = "teacher" onClick={() => {setLogin("")}}/></div>}
           </div>
     );
 }
