@@ -59,10 +59,16 @@ export default function StudentLogin(){
     return(
         <div>
             {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
-            <h1>Full name</h1>
-            <input ref = {inputRef} onChange={(e) => {setName(e.target.value)}} className="inputField"></input>
-            <h1>Class ID</h1>
-            <input onChange={(e) => {setClassId(e.target.value)}} className="inputField"></input>
+            <div className="login-input">
+
+                <h1>Full name</h1>
+                <input ref = {inputRef} onChange={(e) => {setName(e.target.value)}} className="inputField"></input>
+            </div>
+            <div className="login-input">
+                <h1>Class ID</h1>
+                <input onChange={(e) => {setClassId(e.target.value)}} className="inputField"></input>
+            </div>
+            <h1 onClick={handleEnter}>Confirm</h1>
         </div>
     )
 }
