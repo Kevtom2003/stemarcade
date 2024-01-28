@@ -8,163 +8,212 @@ const GalagaGame = () => {
   const appRef = useRef(null);
 
   useEffect(() => {
-    const app = new PIXI.Application({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      backgroundColor: 0x1099bb,
-    });
-    appRef.current.appendChild(app.view);
 
-    // Player setup
-    const player = new PIXI.Sprite(PIXI.Texture.from(planeImage));
-    player.anchor.set(0.5);
-    player.x = app.screen.width / 2;
-    player.y = app.screen.height - 50;
-    app.stage.addChild(player);
+// Based somewhat on this article by Spicy Yoghurt
+// URL for further reading: https://spicyyoghurt.com/tutorials/html5-javascript-game-development/collision-detection-physics
+const app = new PIXI.Application({ background: '#111', resizeTo: window });
 
-    // Laser setup
-    const lasers = [];
+document.body.appendChild(app.view);
 
-    // Alien setup
-    const aliens = [];
+// Options for how objects interact
+// How fast the red square moves
+const movementSpeed = 0.05;
 
-    for (let i = 0; i < 5; i++) {
-      const number = i === 2 ? 25 : Math.floor(Math.random() * 10) + 1;
-      const alien = new PIXI.Text(number, {
-        fontSize: 36,
-        fill: 0xFFFFFF,
-      });
-      alien.x = i * 120;
-      alien.y = 100;
-      aliens.push(alien);
-      app.stage.addChild(alien);
+// Strength of the impulse push between two objects
+const impulsePower = 5;
+
+// Test For Hit
+// A basic AABB check between two different squares
+function testForAABB(object1, object2)
+{
+    const bounds1 = object1.getBounds();
+    const bounds2 = object2.getBounds();
+
+    return bounds1.x < bounds2.x + bounds2.width
+        && bounds1.x + bounds1.width > bounds2.x
+        && bounds1.y < bounds2.y + bounds2.height
+        && bounds1.y + bounds1.height > bounds2.y;
+}
+
+// Calculates the results of a collision, allowing us to give an impulse that
+// shoves objects apart
+function collisionResponse(object1, object2)
+{
+    if (!object1 || !object2)
+    {
+        return new PIXI.Point(0);
     }
 
-    // Math operation text
-    const mathOperation = new PIXI.Text("5 x 5", {
-      fontSize: 24,
-      fill: 0xFFFFFF,
-    });
-    mathOperation.anchor.set(0.5, 1);
-    mathOperation.x = app.screen.width / 2;
-    mathOperation.y = app.screen.height - 10;
-    app.stage.addChild(mathOperation);
+    const vCollision = new PIXI.Point(
+        object2.x - object1.x,
+        object2.y - object1.y,
+    );
 
-    // Keyboard controls
-    const left = keyboard("ArrowLeft");
-    const right = keyboard("ArrowRight");
-    const space = keyboard("Space");
+    const distance = Math.sqrt(
+        (object2.x - object1.x) * (object2.x - object1.x)
+        + (object2.y - object1.y) * (object2.y - object1.y),
+    );
 
-    left.press = () => {
-      player.vx = -5;
-      player.vy = 0;
-    };
+    const vCollisionNorm = new PIXI.Point(
+        vCollision.x / distance,
+        vCollision.y / distance,
+    );
 
-    left.release = () => {
-      if (!right.isDown) {
-        player.vx = 0;
-      }
-    };
+    const vRelativeVelocity = new PIXI.Point(
+        object1.acceleration.x - object2.acceleration.x,
+        object1.acceleration.y - object2.acceleration.y,
+    );
 
-    right.press = () => {
-      player.vx = 5;
-      player.vy = 0;
-    };
+    const speed = vRelativeVelocity.x * vCollisionNorm.x
+        + vRelativeVelocity.y * vCollisionNorm.y;
 
-    right.release = () => {
-      if (!left.isDown) {
-        player.vx = 0;
-      }
-    };
+    const impulse = impulsePower * speed / (object1.mass + object2.mass);
 
-    space.press = () => {
-      // Create and shoot lasers
-      const laser = new PIXI.Graphics();
-      laser.beginFill(0xFF0000);
-      laser.drawRect(0, 0, 5, 10);
-      laser.endFill();
-      laser.x = player.x;
-      laser.y = player.y - 20;
-      lasers.push(laser);
-      app.stage.addChild(laser);
-    };
+    return new PIXI.Point(
+        impulse * vCollisionNorm.x,
+        impulse * vCollisionNorm.y,
+    );
+}
 
-    // Game loop
-    const gameLoop = () => {
-      player.x += player.vx;
+// Calculate the distance between two given points
+function distanceBetweenTwoPoints(p1, p2)
+{
+    const a = p1.x - p2.x;
+    const b = p1.y - p2.y;
 
-      // Update lasers
-      lasers.forEach((laser) => {
-        laser.y -= 5;
+    return Math.hypot(a, b);
+}
 
-        // Check for collision with aliens
-        aliens.forEach((alien) => {
-          if (hitTestRectangle(laser, alien)) {
-            // Handle collision (e.g., increase score)
-            // You can customize this part based on your requirements
-            console.log("Hit!");
-            // Remove laser and reset position
-            laser.y = -100;
-          }
-        });
-      });
-    };
+// The green square we will knock about
+const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
 
-    // PIXI.js ticker
-    app.ticker.add(gameLoop);
+greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+greenSquare.width = 100;
+greenSquare.height = 100;
+greenSquare.tint = 0x00FF00;
+greenSquare.acceleration = new PIXI.Point(0);
+greenSquare.mass = 3;
 
-    // Helper function for keyboard controls
-    function keyboard(keyCode) {
-      const key = {
-        code: keyCode,
-        isDown: false,
-        isUp: true,
-        press: undefined,
-        release: undefined,
-      };
+// The square you move around
+const redSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
 
-      key.downHandler = (event) => {
-        if (event.code === key.code) {
-          if (key.isUp && key.press) key.press();
-          key.isDown = true;
-          key.isUp = false;
-          event.preventDefault();
-        }
-      };
+redSquare.position.set(0, 0);
+redSquare.width = 100;
+redSquare.height = 100;
+redSquare.tint = 0xFF0000;
+redSquare.acceleration = new PIXI.Point(0);
+redSquare.mass = 1;
 
-      key.upHandler = (event) => {
-        if (event.code === key.code) {
-          if (key.isDown && key.release) key.release();
-          key.isDown = false;
-          key.isUp = true;
-          event.preventDefault();
-        }
-      };
+const mouseCoords = { x: 0, y: 0 };
 
-      // Attach event listeners
-      window.addEventListener("keydown", key.downHandler);
-      window.addEventListener("keyup", key.upHandler);
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('mousemove', (event) =>
+{
+    mouseCoords.x = event.global.x;
+    mouseCoords.y = event.global.y;
+});
 
-      return key;
+// Listen for animate update
+app.ticker.add((delta) =>
+{
+    // Applied deacceleration for both squares, done by reducing the
+    // acceleration by 0.01% of the acceleration every loop
+    redSquare.acceleration.set(redSquare.acceleration.x * 0.99, redSquare.acceleration.y * 0.99);
+    greenSquare.acceleration.set(greenSquare.acceleration.x * 0.99, greenSquare.acceleration.y * 0.99);
+
+    // Check whether the green square ever moves off the screen
+    // If so, reverse acceleration in that direction
+    if (greenSquare.x < 0 || greenSquare.x > (app.screen.width - 100))
+    {
+        greenSquare.acceleration.x = -greenSquare.acceleration.x;
     }
 
-    // Helper function for collision detection
-    function hitTestRectangle(r1, r2) {
-      return (
-        r1.x < r2.x + r2.width &&
-        r1.x + r1.width > r2.x &&
-        r1.y < r2.y + r2.height &&
-        r1.y + r1.height > r2.y
-      );
+    if (greenSquare.y < 0 || greenSquare.y > (app.screen.height - 100))
+    {
+        greenSquare.acceleration.y = -greenSquare.acceleration.y;
     }
 
-    // Clean up PIXI.js application on component unmount
+    // If the green square pops out of the cordon, it pops back into the
+    // middle
+    if ((greenSquare.x < -30 || greenSquare.x > (app.screen.width + 30))
+        || greenSquare.y < -30 || greenSquare.y > (app.screen.height + 30))
+    {
+        greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
+    }
+
+    // If the mouse is off screen, then don't update any further
+    if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
+        || app.screen.height > mouseCoords.y || mouseCoords.y > 0)
+    {
+        // Get the red square's center point
+        const redSquareCenterPosition = new PIXI.Point(
+            redSquare.x + (redSquare.width * 0.5),
+            redSquare.y + (redSquare.height * 0.5),
+        );
+
+        // Calculate the direction vector between the mouse pointer and
+        // the red square
+        const toMouseDirection = new PIXI.Point(
+            mouseCoords.x - redSquareCenterPosition.x,
+            mouseCoords.y - redSquareCenterPosition.y,
+        );
+
+        // Use the above to figure out the angle that direction has
+        const angleToMouse = Math.atan2(
+            toMouseDirection.y,
+            toMouseDirection.x,
+        );
+
+        // Figure out the speed the square should be travelling by, as a
+        // function of how far away from the mouse pointer the red square is
+        const distMouseRedSquare = distanceBetweenTwoPoints(
+            mouseCoords,
+            redSquareCenterPosition,
+        );
+        const redSpeed = distMouseRedSquare * movementSpeed;
+
+        // Calculate the acceleration of the red square
+        redSquare.acceleration.set(
+            Math.cos(angleToMouse) * redSpeed,
+            Math.sin(angleToMouse) * redSpeed,
+        );
+    }
+
+    // If the two squares are colliding
+    if (testForAABB(greenSquare, redSquare))
+    {
+        // Calculate the changes in acceleration that should be made between
+        // each square as a result of the collision
+        const collisionPush = collisionResponse(greenSquare, redSquare);
+        // Set the changes in acceleration for both squares
+
+        redSquare.acceleration.set(
+            (collisionPush.x * greenSquare.mass),
+            (collisionPush.y * greenSquare.mass),
+        );
+        greenSquare.acceleration.set(
+            -(collisionPush.x * redSquare.mass),
+            -(collisionPush.y * redSquare.mass),
+        );
+    }
+
+    greenSquare.x += greenSquare.acceleration.x * delta;
+    greenSquare.y += greenSquare.acceleration.y * delta;
+
+    redSquare.x += redSquare.acceleration.x * delta;
+    redSquare.y += redSquare.acceleration.y * delta;
+});
+
+// Add to stage
+app.stage.addChild(redSquare, greenSquare);
+    // Cleanup PIXI when the component unmounts
     return () => {
-      app.destroy();
-    };
-  }, []);
-
-  return <div id="galaga-container" ref={appRef}></div>;
-};
+        app.destroy(true);
+      };
+    }, []); // Run this effect only once during component mount
+  
+    return <div ref={appRef} />;
+  };
 
 export default GalagaGame;
