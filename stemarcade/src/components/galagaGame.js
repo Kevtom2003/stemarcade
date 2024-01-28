@@ -10,15 +10,8 @@ import { useNavigate } from "react-router-dom";
 
 const GalagaGame = () => {
   const appRef = useRef(null);
+  const navigate = useNavigate();
 
-
-  useEffect(() => {
-    console.log(loading);
-    setTimeout(() => {
-      setLoading(false);
-      console.log("done", loading);
-    }, 500);
-  }, []);
 
   useEffect(() => {
 // Based somewhat on this article by Spicy Yoghurt
@@ -73,7 +66,7 @@ const tipText = new PIXI.Text("",style);
 
 tipText.x = 450;
 tipText.y = 70;
-let qCount=0;
+let qCount=2;
 const problemText = new PIXI.Text(questionList[qCount],style);
 problemText.x = 100;
 problemText.y = 50;
@@ -96,7 +89,7 @@ greenSquare.speed = Math.random() * 5;
 
 function getRandomPosition() {
     const screenWidth = app.screen.width;
-    const screenHeight = app.screen.height * 0.7;
+    const screenHeight = app.screen.height * 0.5;
     const x = Math.random() * (screenWidth - 100);
     const y = Math.random() * screenHeight;
     const v = Math.random() * 5;
@@ -315,14 +308,14 @@ function gameEnd() {
     // Create buttons
     const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
     homeButton.x = 100;
-    homeButton.y = 300;
+    homeButton.y = 330;
     homeButton.interactive = true;
     homeButton.buttonMode = true;
     homeButton.on("pointerdown", () => navigate("/galagaIntro"));
 
     const playMoreButton = new PIXI.Text("Play More", style);
-    playMoreButton.x = 300;
-    playMoreButton.y = 300;
+    playMoreButton.x = 100;
+    playMoreButton.y = 380;
     playMoreButton.interactive = true;
     playMoreButton.buttonMode = true;
     playMoreButton.on("pointerdown", () => {
