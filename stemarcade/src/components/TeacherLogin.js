@@ -39,13 +39,14 @@ export default function TeacherLogin(){
                 setErrorMessage("Invalid login!");
             }
         }catch(err){
+            setErrorMessage("Invalid login!");
             console.error(err);
         }
     }
     
     const handleLogin = () => {
         console.log("Logging in...");
-    }
+           }
 
     return(
         <div>
