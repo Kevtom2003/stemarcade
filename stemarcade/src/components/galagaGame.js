@@ -26,9 +26,12 @@ document.body.appendChild(app.view);
 let bullets = [];
 let bulletSpeed = 15;
 let aliens = [];
+let hitcount = 0;
 
 // Test For Hit
 // A basic AABB check between two different squares
+let questionList = ["100*8 - 3/4*800 + 50*4 = ", "A student is traveling at 15mph for 2 hours, how far does he go?","(4^2 + 3*8) * (3/4) = "]
+let alienVals = [400,30,99,120,50]
 function testForHit(object1, object2)
 {
     const bounds1 = object1.getBounds();
@@ -47,6 +50,12 @@ const style = new PIXI.TextStyle({
     fill: ['#ffffff']
 
 });
+
+const gameoverstyle = new PIXI.TextStyle({
+    fill: ['#ffffff'],
+    fontSize : 100
+
+});
 const basicText = new PIXI.Text("Score: " + userScore,style);
 
 basicText.x = 450;
@@ -56,6 +65,12 @@ const tipText = new PIXI.Text("",style);
 
 tipText.x = 450;
 tipText.y = 70;
+let qCount=0;
+const problemText = new PIXI.Text(questionList[qCount],style);
+problemText.x = 100;
+problemText.y = 50;
+
+const gameOverText = new PIXI.Text("GAME OVER" ,style);
 
 
 const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -66,7 +81,7 @@ greenSquare.width = 100;
 greenSquare.height = 100;
 greenSquare.tint = 0x00FF00;
 greenSquare.acceleration = new PIXI.Point(0);
-greenSquare.value = 10;
+greenSquare.value = alienVals[0];
 greenSquare.speed = Math.random() * 5;
 
 function getRandomPosition() {
@@ -98,7 +113,7 @@ function getRandomPosition() {
       greenSquare.tint = 0x00FF00;
       greenSquare.acceleration = new PIXI.Point(0);
       greenSquare.mass = 3;
-      greenSquare.value = 0;
+      greenSquare.value = alienVals[i];
       aliens.push(greenSquare);
       app.stage.addChild(greenSquare);
     }
@@ -239,14 +254,24 @@ function gameLoop(delta){
     redSquare.x += movingRight;
 }
 let tipTimeout;
+
 function updateBullet(delta){
     for(let i = 0;i < bullets.length;i++){
         bullets[i].position.y -= bullets[i].speed;
         for(let j = 0; j < aliens.length;j++){
             if(testForHit(bullets[i], aliens[j])){
                 console.log("HIT!");
-                if(aliens[j].value == 10){
-                    score += 2;
+                if(aliens[j].value === alienVals[qCount]){
+                    hitcount+=1;
+                    if(hitcount === 5){
+                        score += 2;
+                        hitcount=0;
+                        problemText.text = "";
+                        qCount+=1;
+                        problemText.text = questionList[qCount];
+                
+                    }
+                    
                 }else{
                     tipText.text = "Try a different one!";
                     console.log("Miss");
@@ -268,94 +293,14 @@ function updateBullet(delta){
             bullets.splice(i,1);
         }
     }
-    basicText.text = "Score: " + score;
-
-    
-    
-    
+    basicText.text = "Score: " + score;  
 }
 
-
-// Listen for animate update
-// app.ticker.add((delta) =>
-// {
-//     // Applied deacceleration for both squares, done by reducing the
-//     // acceleration by 0.01% of the acceleration every loop
-//     redSquare.acceleration.set(redSquare.acceleration.x * 0.99, redSquare.acceleration.y * 0.99);
-//     greenSquare.acceleration.set(greenSquare.acceleration.x * 0.99, greenSquare.acceleration.y * 0.99);
-
-//     // Check whether the green square ever moves off the screen
-//     // If so, reverse acceleration in that direction
-//     if (greenSquare.x < 0 || greenSquare.x > (app.screen.width - 100))
-//     {
-//         greenSquare.acceleration.x = -greenSquare.acceleration.x;
-//     }
-
-//     if (greenSquare.y < 0 || greenSquare.y > (app.screen.height - 100))
-//     {
-//         greenSquare.acceleration.y = -greenSquare.acceleration.y;
-//     }
-
-//     // If the green square pops out of the cordon, it pops back into the
-//     // middle
-//     if ((greenSquare.x < -30 || greenSquare.x > (app.screen.width + 30))
-//         || greenSquare.y < -30 || greenSquare.y > (app.screen.height + 30))
-//     {
-//         greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
-//     }
-
-//     // If the mouse is off screen, then don't update any further
-//     if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
-//         || app.screen.height > mouseCoords.y || mouseCoords.y > 0)
-//     {
-//         // Get the red square's center point
-//         const redSquareCenterPosition = new PIXI.Point(
-//             redSquare.x + (redSquare.width * 0.5),
-//             redSquare.y + (redSquare.height * 0.5),
-//         );
-
-//         // Calculate the direction vector between the mouse pointer and
-//         // the red square
-//         const toMouseDirection = new PIXI.Point(
-//             mouseCoords.x - redSquareCenterPosition.x,
-//             mouseCoords.y - redSquareCenterPosition.y,
-//         );
-
-//         // Use the above to figure out the angle that direction has
-//         const angleToMouse = Math.atan2(
-//             toMouseDirection.y,
-//             toMouseDirection.x,
-//         );
-
-//         // Figure out the speed the square should be travelling by, as a
-//         // function of how far away from the mouse pointer the red square is
-//         const distMouseRedSquare = distanceBetweenTwoPoints(
-//             mouseCoords,
-//             redSquareCenterPosition,
-//         );
-//         const redSpeed = distMouseRedSquare * movementSpeed;
-
-//         // Calculate the acceleration of the red square
-//         redSquare.acceleration.set(
-//             Math.cos(angleToMouse) * redSpeed,
-//             Math.sin(angleToMouse) * redSpeed,
-//         );
-//     }
-
-//     // If the two squares are colliding
-
-
-//     greenSquare.x += greenSquare.acceleration.x * delta;
-//     greenSquare.y += greenSquare.acceleration.y * delta;
-
-//     redSquare.x += redSquare.acceleration.x * delta;
-//     redSquare.y += redSquare.acceleration.y * delta;
-// });
 
 // Add to stage
 if (app.stage) {
     console.log("rendering");
-    app.stage.addChild(basicText,tipText,redSquare,...aliens);
+    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText);
    // app.stage.addChild(redSquare, greenSquare);
   } else {
     console.error('app.stage is null or undefined.');
