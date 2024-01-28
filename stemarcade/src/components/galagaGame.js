@@ -1,5 +1,5 @@
 // GalagaGame.js
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
 import {Keyboard} from 'pixi.js-keyboard';
@@ -9,6 +9,7 @@ import { Text } from 'pixi.js';
 
 const GalagaGame = () => {
   const appRef = useRef(null);
+
 
   useEffect(() => {
 
@@ -21,7 +22,6 @@ document.body.appendChild(app.view);
 // Options for how objects interact
 // How fast the red square moves
 // const movementSpeed = 0.05;
-
 // Strength of the impulse push between two objects
 let bullets = [];
 let bulletSpeed = 15;

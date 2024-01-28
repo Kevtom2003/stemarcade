@@ -14,8 +14,9 @@ export default function TeacherSelect() {
     const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
+
         if (event.keyCode === 40 || event.keyCode === 38) {
-            setSelected(selected === 'Play' ? 'Back' : 'Play');
+            setSelected(selected === 'Play' ? 'Quit' : 'Play');
         }
 
         if (event.key === 'Enter') {
@@ -54,10 +55,10 @@ export default function TeacherSelect() {
                 </div>
             )}
             {login === "Play" && (
-                <GalagaGame />
+                navigate("/galaga")
             )}
             {login === "Quit" && (
-                <TeacherSelect />
+                navigate("/")
             )}
         </ArcadeOutline>
     )
