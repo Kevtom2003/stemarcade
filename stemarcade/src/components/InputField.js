@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './InputField.css'
-export default function InputField({ focus, onChange }){
+export default function InputField({ focus, onChange, value }){
     const [InWidth, setWidth] = useState(2);
 
     const handleChange = (e) => {
@@ -19,7 +19,7 @@ export default function InputField({ focus, onChange }){
 
     return(
         <div>
-            <input ref = {inputRef} className = "retro-input" style={{width:`${InWidth}%`}} onChange={handleChange}></input>
+            <input ref = {inputRef} className = "retro-input" style={{width:`${InWidth}%`}} onChange={handleChange} value={value}></input>
         </div>
     )
 }
