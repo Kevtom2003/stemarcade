@@ -110,3 +110,7 @@
 .teacher-inputs input select{
     margin-top: 1rem;
 }
+
+.clickable:hover{
+    cursor:pointer;
+}

@@ -7,7 +7,7 @@ import logo from "../images/mathvsmartianslogo.png";
 import bg from "../images/galagaintrobg.gif";
 import GalagaGame from "./galagaGame";
 
-export default function GalagaIntro() {
+export default function TeacherSelect() {
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Play');
 
