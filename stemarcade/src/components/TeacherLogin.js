@@ -147,12 +147,16 @@ export default function TeacherLogin({ onLogin }){
     return(
         <div style={{zIndex:10}}>
             {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
-            <h1>Username</h1>
-            {/* <InputField/> */}
-            <input placeholder="teacher username" onChange={(e) => {setUsername(e.target.value)}}></input>
-            <h1>Password</h1>
-            <input placeholder="teacher password" onChange = {(e) => {setPassword(e.target.value)}}></input>
-            <button onClick={handleEnter}>Press me</button>
+            <div className='login-input'>
+                <h1>Username</h1>
+                <input className="inputField" onChange={(e) => {setUsername(e.target.value)}}></input>
+            </div>
+            <div className='login-input'>
+                <h1>Password</h1>
+                <input className="inputField" onChange = {(e) => {setPassword(e.target.value)}}></input>
+            </div>
+            {/* <button onClick={handleEnter}>Press me</button> */}
+            <h1 onClick={handleEnter}>Confirm</h1>
         </div>
     )
 }

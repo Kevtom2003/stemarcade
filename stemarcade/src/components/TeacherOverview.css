@@ -5,6 +5,11 @@
     text-align: center;
 }
 
+.teacher-options{
+    display: flex;
+    justify-content: space-around;
+}
+
 .select-buttons{
     display: flex;
     justify-content: center;
@@ -88,4 +93,20 @@
 .teacher-select {
     margin-top: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adjust shadow as needed */
+}
+
+.teacher-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1.25rem;
+}
+
+.teacher-inputs label{
+    margin-right: 1rem;
+}
+
+.teacher-inputs input select{
+    margin-top: 1rem;
 }
