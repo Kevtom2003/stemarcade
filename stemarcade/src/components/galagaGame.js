@@ -365,29 +365,26 @@ function getRandomPosition() {
     } 
 }
 function gameEnd() {
-    console.log("game over");
-    gameOverText.text = "YOU WIN!";
+  console.log("game over");
+  gameOverText.text = "YOU WIN!";
+  // Create buttons
+  const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+  homeButton.x = 100;
+  homeButton.y = 330;
+  homeButton.interactive = true;
+  homeButton.buttonMode = true;
+  homeButton.on("pointerdown", () => navigate("/galagaIntro"));
 
-    // Create buttons
-    const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
-    homeButton.x = 100;
-    homeButton.y = 330;
-    homeButton.interactive = true;
-    homeButton.buttonMode = true;
-    homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+  const playMoreButton = new PIXI.Text("Play More", style);
+  playMoreButton.x = 100;
+  playMoreButton.y = 380;
+  playMoreButton.interactive = true;
+  playMoreButton.buttonMode = true;
+  playMoreButton.on("pointerdown", () => {
+    window.location.reload();
+  });
 
-    const playMoreButton = new PIXI.Text("Play More", style);
-    playMoreButton.x = 100;
-    playMoreButton.y = 380;
-    playMoreButton.interactive = true;
-    playMoreButton.buttonMode = true;
-    playMoreButton.on("pointerdown", () => {
-      // Handle the logic to restart the game or navigate to another game level
-      // For simplicity, let's just reload the page here
-      window.location.reload();
-    });
-
-    app.stage.addChild(homeButton, playMoreButton);
+  app.stage.addChild(homeButton, playMoreButton);
 }
 
 // Add to stage
