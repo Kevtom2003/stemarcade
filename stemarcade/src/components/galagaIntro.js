@@ -54,7 +54,7 @@ export default function GalagaIntro() {
                 </div>
             )}
             {login === "Play" && (
-                <GalagaGame />
+                navigate("/galaga")
             )}
             {login === "Quit" && (
                 navigate("/")
