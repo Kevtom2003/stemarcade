@@ -12,13 +12,12 @@ import spacebg from "../images/spacebg.jpg"
 import { Keyboard } from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
 import { useNavigate } from "react-router-dom";
-
+//import { setTimeout } from "timers/promises";
 
 
 const GalagaGame = () => {
   const appRef = useRef(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
 
@@ -46,6 +45,7 @@ const GalagaGame = () => {
     // Test For Hit
     // A basic AABB check between two different squares
     let questionList = ["100*8 - 3/4*800 + 50*4 = ", "A student is traveling at 15mph for 2 hours, how far does he go?", "(4^2 + 3*8) * (3/4) = "]
+    let responseList = ["Correct! Speaking of 400, the fastest rocket in the world traveled at about \n400,000 kph! Let's try to be fast too, and show these aliens who's boss!", "Right again! Did you know that there are 30 Earth's worth of distance between us and the moon?\nLook how far we've come!", "Awesome! Interesting, because the Sun makes up 99% of our solar system's mass!\nJust like the sun, you're on fire!!"]
     let alienVals = [400, 30, 99, 120, 50]
     function testForHit(object1, object2) {
       const bounds1 = object1.getBounds();
@@ -72,21 +72,25 @@ const GalagaGame = () => {
     });
     const basicText = new PIXI.Text("Score: " + userScore, style);
 
-basicText.x = 1200;
-basicText.y = 50;
+    basicText.x = 1200;
+    basicText.y = 50;
 
     const tipText = new PIXI.Text("", style);
 
-tipText.x = 450;
-tipText.y = 70;
-let qCount=0;
-const problemText = new PIXI.Text(questionList[qCount],style);
-problemText.x = 100;
-problemText.y = 50;
+    tipText.x = 450;
+    tipText.y = 70;
+    let qCount = 0;
+    const problemText = new PIXI.Text(questionList[qCount], style);
+    problemText.x = 100;
+    problemText.y = 50;
 
-const gameOverText = new PIXI.Text("" ,gameoverstyle);
-gameOverText.x=100;
-gameOverText.y=220;
+    const responseText = new PIXI.Text("", style);
+    problemText.x = 100;
+    problemText.y = 200;
+
+    const gameOverText = new PIXI.Text("", gameoverstyle);
+    gameOverText.x = 100;
+    gameOverText.y = 220;
 
     // Create a PIXI.Sprite with the desired texture
     const greenSquare = PIXI.Sprite.from(alien400);
@@ -99,90 +103,90 @@ gameOverText.y=220;
     greenSquare.value = alienVals[0];
     greenSquare.speed = Math.random() * 5;
 
-function getRandomPosition() {
-    const screenWidth = app.screen.width;
-    const screenHeight = app.screen.height * 0.5;
-    const x = Math.random() * (screenWidth - 100);
-    const y = Math.random() * screenHeight;
-    const v = Math.random() * 3;
-    return { x, y, v };
-  }
-  function distanceBetweenTwoPoints(point1, point2) {
-    const dx = point2.x - point1.x;
-    const dy = point2.y - point1.y;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
+    function getRandomPosition() {
+      const screenWidth = app.screen.width;
+      const screenHeight = app.screen.height * 0.5;
+      const x = Math.random() * (screenWidth - 100);
+      const y = Math.random() * screenHeight;
+      const v = Math.random() * 3;
+      return { x, y, v };
+    }
+    function distanceBetweenTwoPoints(point1, point2) {
+      const dx = point2.x - point1.x;
+      const dy = point2.y - point1.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
     // Function to add green squares to the stage
     function addGreenSquares() {
-        const minDistance = 150; // Minimum distance between aliens
-        let position = getRandomPosition();
-        while (aliens.some((alien) => distanceBetweenTwoPoints(position, alien.position) < minDistance)) {
-          position = getRandomPosition();
-        }
-        // Create a PIXI.Sprite with the desired texture
-        const greenSquare = PIXI.Sprite.from(alien30);
-        aliens.push(greenSquare);
-        greenSquare.speed = position.v;
-        greenSquare.position.set(position.x, position.y);
-        greenSquare.width = 50;
-        greenSquare.height = 60;
-        greenSquare.acceleration = new PIXI.Point(0);
-        greenSquare.mass = 3;
-        greenSquare.value = alienVals[1];
-        aliens.push(greenSquare);
-        app.stage.addChild(greenSquare);
+      const minDistance = 150; // Minimum distance between aliens
+      let position = getRandomPosition();
+      while (aliens.some((alien) => distanceBetweenTwoPoints(position, alien.position) < minDistance)) {
+        position = getRandomPosition();
+      }
+      // Create a PIXI.Sprite with the desired texture
+      const greenSquare = PIXI.Sprite.from(alien30);
+      aliens.push(greenSquare);
+      greenSquare.speed = position.v;
+      greenSquare.position.set(position.x, position.y);
+      greenSquare.width = 50;
+      greenSquare.height = 60;
+      greenSquare.acceleration = new PIXI.Point(0);
+      greenSquare.mass = 3;
+      greenSquare.value = alienVals[1];
+      aliens.push(greenSquare);
+      app.stage.addChild(greenSquare);
 
-        let position2 = getRandomPosition();
-        while (aliens.some((alien) => distanceBetweenTwoPoints(position2, alien.position) < minDistance)) {
-          position2 = getRandomPosition();
-        }
-        // Create a PIXI.Sprite with the desired texture
-        const greenSquare2 = PIXI.Sprite.from(alien99);
-        aliens.push(greenSquare2);
-        greenSquare2.speed = position2.v;
-        greenSquare2.position.set(position2.x, position2.y);
-        greenSquare2.width = 50;
-        greenSquare2.height = 60;
-        greenSquare2.acceleration = new PIXI.Point(0);
-        greenSquare2.mass = 3;
-        greenSquare2.value = alienVals[2];
-        aliens.push(greenSquare2);
-        app.stage.addChild(greenSquare2);
+      let position2 = getRandomPosition();
+      while (aliens.some((alien) => distanceBetweenTwoPoints(position2, alien.position) < minDistance)) {
+        position2 = getRandomPosition();
+      }
+      // Create a PIXI.Sprite with the desired texture
+      const greenSquare2 = PIXI.Sprite.from(alien99);
+      aliens.push(greenSquare2);
+      greenSquare2.speed = position2.v;
+      greenSquare2.position.set(position2.x, position2.y);
+      greenSquare2.width = 50;
+      greenSquare2.height = 60;
+      greenSquare2.acceleration = new PIXI.Point(0);
+      greenSquare2.mass = 3;
+      greenSquare2.value = alienVals[2];
+      aliens.push(greenSquare2);
+      app.stage.addChild(greenSquare2);
 
-        let position3 = getRandomPosition();
-        while (aliens.some((alien) => distanceBetweenTwoPoints(position3, alien.position) < minDistance)) {
-          position3 = getRandomPosition();
-        }
-        // Create a PIXI.Sprite with the desired texture
-        const greenSquare3 = PIXI.Sprite.from(alien169);
-        aliens.push(greenSquare3);
-        greenSquare3.speed = position2.v;
-        greenSquare3.position.set(position2.x, position2.y);
-        greenSquare3.width = 50;
-        greenSquare3.height = 60;
-        greenSquare3.acceleration = new PIXI.Point(0);
-        greenSquare3.mass = 3;
-        greenSquare3.value = alienVals[3];
-        aliens.push(greenSquare3);
-        app.stage.addChild(greenSquare3);
+      let position3 = getRandomPosition();
+      while (aliens.some((alien) => distanceBetweenTwoPoints(position3, alien.position) < minDistance)) {
+        position3 = getRandomPosition();
+      }
+      // Create a PIXI.Sprite with the desired texture
+      const greenSquare3 = PIXI.Sprite.from(alien169);
+      aliens.push(greenSquare3);
+      greenSquare3.speed = position2.v;
+      greenSquare3.position.set(position2.x, position2.y);
+      greenSquare3.width = 50;
+      greenSquare3.height = 60;
+      greenSquare3.acceleration = new PIXI.Point(0);
+      greenSquare3.mass = 3;
+      greenSquare3.value = alienVals[3];
+      aliens.push(greenSquare3);
+      app.stage.addChild(greenSquare3);
 
-        let position4 = getRandomPosition();
-        while (aliens.some((alien) => distanceBetweenTwoPoints(position4, alien.position) < minDistance)) {
-          position4 = getRandomPosition();
-        }
-        // Create a PIXI.Sprite with the desired texture
-        const greenSquare4 = PIXI.Sprite.from(alien78);
-        aliens.push(greenSquare3);
-        greenSquare4.speed = position2.v;
-        greenSquare4.position.set(position2.x, position2.y);
-        greenSquare4.width = 50;
-        greenSquare4.height = 60;
-        greenSquare4.acceleration = new PIXI.Point(0);
-        greenSquare4.mass = 3;
-        greenSquare4.value = alienVals[4];
-        aliens.push(greenSquare4);
-        app.stage.addChild(greenSquare4);
-      
+      let position4 = getRandomPosition();
+      while (aliens.some((alien) => distanceBetweenTwoPoints(position4, alien.position) < minDistance)) {
+        position4 = getRandomPosition();
+      }
+      // Create a PIXI.Sprite with the desired texture
+      const greenSquare4 = PIXI.Sprite.from(alien78);
+      aliens.push(greenSquare3);
+      greenSquare4.speed = position2.v;
+      greenSquare4.position.set(position2.x, position2.y);
+      greenSquare4.width = 50;
+      greenSquare4.height = 60;
+      greenSquare4.acceleration = new PIXI.Point(0);
+      greenSquare4.mass = 3;
+      greenSquare4.value = alienVals[4];
+      aliens.push(greenSquare4);
+      app.stage.addChild(greenSquare4);
+
     }
     addGreenSquares();
 
@@ -302,6 +306,7 @@ function getRandomPosition() {
     }
     var score = 0;
     function gameLoop(delta) {
+
       updateBullet(delta);
       for (let i = 0; i < aliens.length; i++) {
         aliens[i].position.x += aliens[i].speed * delta;
@@ -331,13 +336,13 @@ function getRandomPosition() {
               hitcount += 1;
               score += 2;
               if (hitcount === 5) {
-                hitcount = 0;
                 problemText.text = "";
+                responseText.text = responseList[qCount];
+                //await setTimeout(5000);
                 qCount += 1;
                 problemText.text = questionList[qCount];
-
+                responseText.text = "";
               }
-
             } else {
               tipText.text = "Try a different one!";
               console.log("Miss");
@@ -358,43 +363,43 @@ function getRandomPosition() {
           app.stage.removeChild(bullets[i]);
           bullets.splice(i, 1);
         }
-    }
-    basicText.text = "Score: " + score; 
-    if(qCount > 2){
+      }
+      basicText.text = "Score: " + score;
+      if (qCount > 2) {
         gameEnd();
-    } 
-}
-function gameEnd() {
-  console.log("game over");
-  gameOverText.text = "YOU WIN!";
-  // Create buttons
-  const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
-  homeButton.x = 100;
-  homeButton.y = 330;
-  homeButton.interactive = true;
-  homeButton.buttonMode = true;
-  homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+      }
+    }
+    function gameEnd() {
+      console.log("game over");
+      gameOverText.text = "YOU WIN!";
+      // Create buttons
+      const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+      homeButton.x = 100;
+      homeButton.y = 330;
+      homeButton.interactive = true;
+      homeButton.buttonMode = true;
+      homeButton.on("pointerdown", () => navigate("/galagaIntro"));
 
-  const playMoreButton = new PIXI.Text("Play More", style);
-  playMoreButton.x = 100;
-  playMoreButton.y = 380;
-  playMoreButton.interactive = true;
-  playMoreButton.buttonMode = true;
-  playMoreButton.on("pointerdown", () => {
-    window.location.reload();
-  });
+      const playMoreButton = new PIXI.Text("Play More", style);
+      playMoreButton.x = 100;
+      playMoreButton.y = 380;
+      playMoreButton.interactive = true;
+      playMoreButton.buttonMode = true;
+      playMoreButton.on("pointerdown", () => {
+        window.location.reload();
+      });
 
-  app.stage.addChild(homeButton, playMoreButton);
-}
+      app.stage.addChild(homeButton, playMoreButton);
+    }
 
-// Add to stage
-if (app.stage) {
-    console.log("rendering");
-    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText,gameOverText);
-   // app.stage.addChild(redSquare, greenSquare);
-  } else {
-    console.error('app.stage is null or undefined.');
-  }
+    // Add to stage
+    if (app.stage) {
+      console.log("rendering");
+      app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText, gameOverText);
+      // app.stage.addChild(redSquare, greenSquare);
+    } else {
+      console.error('app.stage is null or undefined.');
+    }
     // Cleanup PIXI when the component unmounts
     return () => {
       app.destroy(true);
