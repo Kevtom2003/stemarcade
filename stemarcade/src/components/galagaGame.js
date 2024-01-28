@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
+import alien from "../images/rawalienhead.png"
+import spacebg from "../images/spacebg.jpg"
 import {Keyboard} from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
 
@@ -15,6 +17,11 @@ const GalagaGame = () => {
 // Based somewhat on this article by Spicy Yoghurt
 // URL for further reading: https://spicyyoghurt.com/tutorials/html5-javascript-game-development/collision-detection-physics
 const app = new PIXI.Application({ background: '#111', resizeTo: window });
+const backgroundTexture = PIXI.Texture.from(spacebg);
+const backgroundSprite = new PIXI.TilingSprite(backgroundTexture, app.screen.width, app.screen.height);
+backgroundSprite.tileScale.set(0.5, 0.5);
+app.stage.addChild(backgroundSprite);
+
 app.ticker.add(gameLoop);
 document.body.appendChild(app.view);
 
@@ -26,6 +33,8 @@ document.body.appendChild(app.view);
 let bullets = [];
 let bulletSpeed = 15;
 let aliens = [];
+let alienimgs = [];
+alienimgs.push();
 
 // Test For Hit
 // A basic AABB check between two different squares
@@ -58,13 +67,12 @@ tipText.x = 450;
 tipText.y = 70;
 
 
-const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
+const greenSquare = PIXI.Sprite.from(alien);
 aliens.push(greenSquare);
 
 greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
 greenSquare.width = 100;
 greenSquare.height = 100;
-greenSquare.tint = 0x00FF00;
 greenSquare.acceleration = new PIXI.Point(0);
 greenSquare.value = 10;
 greenSquare.speed = Math.random() * 5;
@@ -90,12 +98,11 @@ function getRandomPosition() {
       while (aliens.some((alien) => distanceBetweenTwoPoints(position, alien.position) < minDistance)) {
         position = getRandomPosition();
       }
-      const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
+      const greenSquare = PIXI.Sprite.from(alien);
       greenSquare.speed = position.v;
       greenSquare.position.set(position.x, position.y);
       greenSquare.width = 100;
       greenSquare.height = 100;
-      greenSquare.tint = 0x00FF00;
       greenSquare.acceleration = new PIXI.Point(0);
       greenSquare.mass = 3;
       greenSquare.value = 0;
@@ -212,7 +219,7 @@ function createBullet(){
     let bullet = PIXI.Sprite.from(PIXI.Texture.WHITE);
     bullet.width = 10;
     bullet.height = 10;
-    bullet.tint = 0x00FF00;
+    bullet.tint = 0xFFFF00;
     bullet.x=redSquare.x * 0.992;
     bullet.y=redSquare.y - redSquare.height;
     bullet.speed = bulletSpeed;

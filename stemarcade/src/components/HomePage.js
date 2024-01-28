@@ -59,7 +59,7 @@ export default function TeacherSelect() {
               src={logo}
               alt="Your Image Alt Text"
               width="50%"
-              height="50%"
+              height="70%"
             />
             {login === "" && 
                 <div>
