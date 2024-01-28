@@ -23,9 +23,9 @@ document.body.appendChild(app.view);
 // const movementSpeed = 0.05;
 
 // Strength of the impulse push between two objects
-const impulsePower = 5;
 let bullets = [];
-let bulletSpeed = 10;
+let bulletSpeed = 15;
+let aliens = [];
 
 // Test For Hit
 // A basic AABB check between two different squares
@@ -40,56 +40,7 @@ function testForHit(object1, object2)
         && bounds1.y + bounds1.height > bounds2.y;
 }
 
-// Calculates the results of a collision, allowing us to give an impulse that
-// shoves objects apart
-// function collisionResponse(object1, object2)
-// {
-//     if (!object1 || !object2)
-//     {
-//         return new PIXI.Point(0);
-//     }
 
-//     const vCollision = new PIXI.Point(
-//         object2.x - object1.x,
-//         object2.y - object1.y,
-//     );
-
-//     const distance = Math.sqrt(
-//         (object2.x - object1.x) * (object2.x - object1.x)
-//         + (object2.y - object1.y) * (object2.y - object1.y),
-//     );
-
-//     const vCollisionNorm = new PIXI.Point(
-//         vCollision.x / distance,
-//         vCollision.y / distance,
-//     );
-
-//     const vRelativeVelocity = new PIXI.Point(
-//         object1.acceleration.x - object2.acceleration.x,
-//         object1.acceleration.y - object2.acceleration.y,
-//     );
-
-//     const speed = vRelativeVelocity.x * vCollisionNorm.x
-//         + vRelativeVelocity.y * vCollisionNorm.y;
-
-//     const impulse = impulsePower * speed / (object1.mass + object2.mass);
-
-//     return new PIXI.Point(
-//         impulse * vCollisionNorm.x,
-//         impulse * vCollisionNorm.y,
-//     );
-// }
-
-// // Calculate the distance between two given points
-// function distanceBetweenTwoPoints(p1, p2)
-// {
-//     const a = p1.x - p2.x;
-//     const b = p1.y - p2.y;
-
-//     return Math.hypot(a, b);
-// }
-
-// The green square we will knock about
 var userScore = 0;
 
 const style = new PIXI.TextStyle({
@@ -101,15 +52,58 @@ const basicText = new PIXI.Text("Score: " + userScore,style);
 basicText.x = 450;
 basicText.y = 50;
 
+const tipText = new PIXI.Text("",style);
+
+tipText.x = 450;
+tipText.y = 70;
+
 
 const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
+aliens.push(greenSquare);
 
 greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
 greenSquare.width = 100;
 greenSquare.height = 100;
 greenSquare.tint = 0x00FF00;
 greenSquare.acceleration = new PIXI.Point(0);
-greenSquare.mass = 3;
+greenSquare.value = 10;
+greenSquare.speed = Math.random() * 5;
+
+function getRandomPosition() {
+    const screenWidth = app.screen.width;
+    const screenHeight = app.screen.height * 0.7;
+    const x = Math.random() * (screenWidth - 100);
+    const y = Math.random() * screenHeight;
+    const v = Math.random() * 5;
+    return { x, y, v };
+  }
+  function distanceBetweenTwoPoints(point1, point2) {
+    const dx = point2.x - point1.x;
+    const dy = point2.y - point1.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  // Function to add green squares to the stage
+  function addGreenSquares() {
+    for (let i = 0; i < 4; i++) {
+    const minDistance = 150; // Minimum distance between aliens
+    let position = getRandomPosition();
+      while (aliens.some((alien) => distanceBetweenTwoPoints(position, alien.position) < minDistance)) {
+        position = getRandomPosition();
+      }
+      const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
+      greenSquare.speed = position.v;
+      greenSquare.position.set(position.x, position.y);
+      greenSquare.width = 100;
+      greenSquare.height = 100;
+      greenSquare.tint = 0x00FF00;
+      greenSquare.acceleration = new PIXI.Point(0);
+      greenSquare.mass = 3;
+      greenSquare.value = 0;
+      aliens.push(greenSquare);
+      app.stage.addChild(greenSquare);
+    }
+  }
+  addGreenSquares();
 
 // The square you move around
 // const redSquare = PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
@@ -174,7 +168,7 @@ function keyboard(keyCode) {
       left.press = () => {
         console.log("Moving left");
         //Change the sprite’s velocity when the key is pressed
-        movingLeft = 5;
+        movingLeft = 8;
         };
       
     
@@ -189,7 +183,7 @@ function keyboard(keyCode) {
         console.log("Moving left");
         //Change the sprite’s velocity when the key is pressed
             movingLeft = 0;
-            movingRight=5;
+            movingRight=8;
         };
       
     
@@ -228,21 +222,45 @@ function createBullet(){
 var score =0;
 function gameLoop(delta){
     updateBullet(delta);
+    for (let i = 0; i < aliens.length; i++) {
+        aliens[i].position.x += aliens[i].speed * delta;
+    
+        // Check if the alien hits the screen boundaries
+        if (
+          aliens[i].position.x < 0 ||
+          aliens[i].position.x > app.screen.width - aliens[i].width
+        ) {
+          // Reverse the direction when hitting the boundaries
+          aliens[i].speed = -aliens[i].speed;
+        }
+      }
+    
     redSquare.x -= movingLeft;
     redSquare.x += movingRight;
-    
 }
-
+let tipTimeout;
 function updateBullet(delta){
     for(let i = 0;i < bullets.length;i++){
         bullets[i].position.y -= bullets[i].speed;
-        if(testForHit(bullets[i], greenSquare)){
-            console.log("HIT!");
-            score += 2;
-            bullets[i].dead= true;
-        }else if(bullets[i].position.y < 0){
-            bullets[i].dead= true;
+        for(let j = 0; j < aliens.length;j++){
+            if(testForHit(bullets[i], aliens[j])){
+                console.log("HIT!");
+                if(aliens[j].value == 10){
+                    score += 2;
+                }else{
+                    tipText.text = "Try a different one!";
+                    console.log("Miss");
+                    clearTimeout(tipTimeout);
+                    tipTimeout = setTimeout(() => {
+                        tipText.text = "";
+                    }, 300); // Adjust the duration (in milliseconds) as needed
+                }
+                bullets[i].dead= true;
+            }else if(bullets[i].position.y < 0){
+                bullets[i].dead= true;
+            }
         }
+        
     }
     for(let i = 0;i < bullets.length;i++){
         if(bullets[i].dead){
@@ -251,6 +269,9 @@ function updateBullet(delta){
         }
     }
     basicText.text = "Score: " + score;
+
+    
+    
     
 }
 
@@ -334,8 +355,8 @@ function updateBullet(delta){
 // Add to stage
 if (app.stage) {
     console.log("rendering");
-    app.stage.addChild(basicText);
-    app.stage.addChild(redSquare, greenSquare);
+    app.stage.addChild(basicText,tipText,redSquare,...aliens);
+   // app.stage.addChild(redSquare, greenSquare);
   } else {
     console.error('app.stage is null or undefined.');
   }
