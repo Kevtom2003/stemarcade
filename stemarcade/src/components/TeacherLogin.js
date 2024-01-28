@@ -8,7 +8,6 @@ export default function TeacherLogin(){
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleKeyDown = (event) => {
-        console.log(username, password);
         if(event.keyCode === 13 && username != "" && password != ""){
             handleEnter();
         }

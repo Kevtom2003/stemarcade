@@ -4,20 +4,14 @@ import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
 import {Keyboard} from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
+import { useNavigate } from "react-router-dom";
 
 
 
 const GalagaGame = () => {
-  const [loading, setLoading] = useState(true);
   const appRef = useRef(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(loading);
-    setTimeout(() => {
-      setLoading(false);
-      console.log("done", loading);
-    }, 500);
-  }, []);
 
   useEffect(() => {
 // Based somewhat on this article by Spicy Yoghurt
@@ -29,7 +23,6 @@ document.body.appendChild(app.view);
 // Options for how objects interact
 // How fast the red square moves
 // const movementSpeed = 0.05;
-
 // Strength of the impulse push between two objects
 let bullets = [];
 let bulletSpeed = 15;
@@ -66,19 +59,21 @@ const gameoverstyle = new PIXI.TextStyle({
 });
 const basicText = new PIXI.Text("Score: " + userScore,style);
 
-basicText.x = 450;
+basicText.x = 1200;
 basicText.y = 50;
 
 const tipText = new PIXI.Text("",style);
 
 tipText.x = 450;
 tipText.y = 70;
-let qCount=0;
+let qCount=2;
 const problemText = new PIXI.Text(questionList[qCount],style);
 problemText.x = 100;
 problemText.y = 50;
 
-const gameOverText = new PIXI.Text("GAME OVER" ,style);
+const gameOverText = new PIXI.Text("" ,gameoverstyle);
+gameOverText.x=100;
+gameOverText.y=220;
 
 
 const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -94,7 +89,7 @@ greenSquare.speed = Math.random() * 5;
 
 function getRandomPosition() {
     const screenWidth = app.screen.width;
-    const screenHeight = app.screen.height * 0.7;
+    const screenHeight = app.screen.height * 0.5;
     const x = Math.random() * (screenWidth - 100);
     const y = Math.random() * screenHeight;
     const v = Math.random() * 5;
@@ -301,14 +296,41 @@ function updateBullet(delta){
             bullets.splice(i,1);
         }
     }
-    basicText.text = "Score: " + score;  
+    basicText.text = "Score: " + score; 
+    if(qCount > 2){
+        gameEnd();
+    } 
 }
+function gameEnd() {
+    console.log("game over");
+    gameOverText.text = "YOU WIN!";
 
+    // Create buttons
+    const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+    homeButton.x = 100;
+    homeButton.y = 330;
+    homeButton.interactive = true;
+    homeButton.buttonMode = true;
+    homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+
+    const playMoreButton = new PIXI.Text("Play More", style);
+    playMoreButton.x = 100;
+    playMoreButton.y = 380;
+    playMoreButton.interactive = true;
+    playMoreButton.buttonMode = true;
+    playMoreButton.on("pointerdown", () => {
+      // Handle the logic to restart the game or navigate to another game level
+      // For simplicity, let's just reload the page here
+      window.location.reload();
+    });
+
+    app.stage.addChild(homeButton, playMoreButton);
+}
 
 // Add to stage
 if (app.stage) {
     console.log("rendering");
-    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText);
+    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText,gameOverText);
    // app.stage.addChild(redSquare, greenSquare);
   } else {
     console.error('app.stage is null or undefined.');
