@@ -3,12 +3,14 @@ import './App.css';
 import {Routes,Route} from "react-router-dom"
 import HomePage from './components/HomePage'
 import GalagaGame from "./components/galagaGame";
+import TeacherOverview from "./components/TeacherOverview";
 
 const App = () => {
   return(
   <Routes>
     <Route path = "/" element = {<HomePage/>}/>
     <Route path = "/galaga" element = {<GalagaGame/>}/>
+    <Route path = "/teacher" element = {<TeacherOverview/>} />
   </Routes>
   )
 }
