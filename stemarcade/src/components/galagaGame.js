@@ -82,13 +82,14 @@ const GalagaGame = () => {
     tipText.x = 450;
     tipText.y = 70;
     let qCount = 0;
+
     const problemText = new PIXI.Text(questionList[qCount], style);
     problemText.x = 100;
     problemText.y = 50;
 
     const responseText = new PIXI.Text("", style);
-    // responseText.x = 100;
-    // responseText.y = 200;
+    responseText.x = 100;
+    responseText.y = 50;
 
     const gameOverText = new PIXI.Text("", gameoverstyle);
     gameOverText.x = 100;
@@ -327,6 +328,7 @@ const GalagaGame = () => {
       redSquare.x += movingRight;
     }
     let tipTimeout;
+    let responseTimeout;
 
     function updateBullet(delta) {
       for (let i = 0; i < bullets.length; i++) {
@@ -339,12 +341,20 @@ const GalagaGame = () => {
               score += 2;
               basicText.text = "Score:   " + score;
               if (hitcount === 5) {
+                hitcount = 0;
                 problemText.text = "";
                 responseText.text = responseList[qCount];
-                //await setTimeout(5000);
-                qCount += 1;
-                problemText.text = questionList[qCount];
-                responseText.text = "";
+                console.log("Question Completed!");
+                clearTimeout(responseTimeout);
+                responseTimeout = setTimeout(() => {
+                  qCount += 1;
+                  problemText.text = questionList[qCount];
+                  responseText.text = "";
+                }, 4000); // Adjust the duration (in milliseconds) as needed
+
+                //qCount += 1;
+                //problemText.text = questionList[qCount];
+                //responseText.text = "";
               }
             } else {
               tipText.text = "Try a different one!";
@@ -398,7 +408,7 @@ const GalagaGame = () => {
     // Add to stage
     if (app.stage) {
       console.log("rendering");
-      app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText, gameOverText);
+      app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText, gameOverText, responseText);
       // app.stage.addChild(redSquare, greenSquare);
     } else {
       console.error('app.stage is null or undefined.');
