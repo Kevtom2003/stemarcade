@@ -54,3 +54,4 @@ const Home = ({ x, y, width, height }) => {
 };
 
 export default Home;
+

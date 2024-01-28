@@ -1,14 +1,15 @@
+import React from "react";
 import './App.css';
-import Home from './components/Home';
+import {Routes,Route} from "react-router-dom"
+import HomePage from './components/HomePage'
+import GalagaGame from "./components/galagaGame";
 
 const App = () => {
-  return (
-    <div>
-      <h1>Math VS Martians</h1>
-      <Home x={50} y={50} width={50} height={50} />
-    </div>
-  );
-};
-
-
+  return(
+  <Routes>
+    <Route path = "/" element = {<HomePage/>}/>
+    <Route path = "/galaga" element = {<GalagaGame/>}/>
+  </Routes>
+  )
+}
 export default App;
