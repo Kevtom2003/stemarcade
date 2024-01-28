@@ -381,7 +381,7 @@ function gameEnd() {
   homeButton.y = 330;
   homeButton.interactive = true;
   homeButton.buttonMode = true;
-  homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+  homeButton.on("pointerdown", () => navigate(`/galagaIntro/${studentId}`));
 
       const playMoreButton = new PIXI.Text("Play More", style);
       playMoreButton.x = 100;
