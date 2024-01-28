@@ -50,9 +50,8 @@ export default function TeacherSelect({ onTeacherLogin }){
               src={logo}
               alt="Your Image Alt Text"
               style={{
-                width:"60%",
-              height:"60%",
-              textAlign:"left",
+                width:"40%",
+              height:"70%",
               }}
             />
             {login === "" && 
