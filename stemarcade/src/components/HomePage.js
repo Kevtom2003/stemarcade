@@ -5,6 +5,7 @@ import './HomePage.css';
 import TeacherLogin from "./TeacherLogin";
 import StudentLogin from "./StudentLogin";
 
+
 export default function TeacherSelect(){
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Student');
@@ -36,8 +37,8 @@ export default function TeacherSelect(){
             { login === "" && (
 
                 <div>
-                    <h1>{selected === 'Student' ? '>Student' : 'Student'}</h1>
-                    <h1>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
+                    <h1 style={{ fontFamily: 'Press Start 2P', fontSize: '20px', color: '#fcd400' }}>{selected === 'Student' ? '>Student' : 'Student'}</h1>
+                    <h1 style={{ fontFamily: 'Press Start 2P', fontSize: '20px', color: '#fcd400' }}>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
                 </div>
             )}
             { login === "Teacher" && (
