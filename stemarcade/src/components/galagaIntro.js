@@ -14,6 +14,7 @@ export default function TeacherSelect() {
     const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
+
         if (event.keyCode === 40 || event.keyCode === 38) {
             setSelected(selected === 'Play' ? 'Quit' : 'Play');
         }
