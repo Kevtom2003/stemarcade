@@ -7,6 +7,7 @@ import GalagaGame from "./components/galagaGame";
 import TeacherOverview from "./components/TeacherOverview";
 import { useNavigate } from "react-router-dom";
 
+import GalagaIntro from "./components/galagaIntro";
 const App = () => {
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const App = () => {
     <Route path = "/" element = {<HomePage onTeacherLogin={setTeacherId}/>}/>
     <Route path = "/galaga" element = {<GalagaGame/>}/>
     <Route path = "/teacher/:teacher_id" element = {<TeacherOverview teacherId={teacherId}/>} />
+    <Route path = "/galagaIntro" element = {<GalagaIntro/>}/>
   </Routes>
   )
 }

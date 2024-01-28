@@ -3,6 +3,12 @@ body{
     background-color: black;
 }
 
+@font-face {
+    font-family: "myFirstFont";
+    src: url("../public/StayPixelRegular-EaOxl.ttf");
+}
+
 h1{
     color: white;
+    font-family: "myFirstFont";
 }

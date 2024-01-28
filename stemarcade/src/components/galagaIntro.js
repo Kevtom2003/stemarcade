@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react"
 import ArcadeOutline from "./ArcadeOutline";
 import { useNavigate } from "react-router-dom";
 import './HomePage.css';
-import TeacherLogin from "./TeacherLogin";
 import StudentLogin from "./StudentLogin";
-import logo from "../images/stemarcadelogo.png";
-import bg from "../images/homepagebg3.gif";
+import logo from "../images/mathvsmartianslogo.png";
+import bg from "../images/galagaintrobg.gif";
+import GalagaGame from "./galagaGame";
 
-export default function TeacherSelect({ onTeacherLogin }){
-
-export default function TeacherSelect({ onTeacherLogin }){
-
+export default function TeacherSelect() {
     const [login, setLogin] = useState("");
-    const [selected, setSelected] = useState('Student');
+    const [selected, setSelected] = useState('Play');
+
+    const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
         if (event.keyCode === 40 || event.keyCode === 38) {
-            setSelected(selected === 'Student' ? 'Teacher' : 'Student');
+            setSelected(selected === 'Play' ? 'Back' : 'Play');
         }
 
         if (event.key === 'Enter') {
@@ -50,16 +49,15 @@ export default function TeacherSelect({ onTeacherLogin }){
                     display: 'block', // Remove any extra space below the image
                 }}>
                     <img src={logo} alt="Your Image Alt Text" width="50%" height="50%" />
-                    <h1>The sky is the limit.</h1>
-                    <h1>{selected === 'Student' ? '>Student' : 'Student'}</h1>
-                    <h1>{selected === 'Teacher' ? '>Teacher' : 'Teacher'}</h1>
+                    <h1>{selected === 'Play' ? '>Play' : 'Play'}</h1>
+                    <h1>{selected === 'Quit' ? '>Quit' : 'Quit'}</h1>
                 </div>
             )}
-            {login === "Teacher" && (
-                <TeacherLogin onLogin={onTeacherLogin}/>
+            {login === "Play" && (
+                <GalagaGame />
             )}
-            {login === "Student" && (
-                <StudentLogin />
+            {login === "Quit" && (
+                <TeacherSelect />
             )}
         </ArcadeOutline>
     )

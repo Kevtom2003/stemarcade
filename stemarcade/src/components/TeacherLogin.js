@@ -12,13 +12,16 @@ export default function TeacherLogin({ onLogin }){
     //     }
     // }
 
-    // useEffect(() => {
-    //     window.addEventListener('keydown', handleKeyDown);
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+        if(inputRef.current && username == "" && password == ""){
+            inputRef.current.focus();
+        }
 
-    //     return () => {
-    //         window.removeEventListener('keydown', handleKeyDown);
-    //     }
-    // }, []);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [username, password]);
 
     // useEffect(() => {
     //     if (loggedIn) {
@@ -43,6 +46,7 @@ export default function TeacherLogin({ onLogin }){
             }
             // console.log(p);
         }catch(err){
+            setErrorMessage("Invalid login!");
             console.error(err);
         }
 
@@ -58,11 +62,12 @@ export default function TeacherLogin({ onLogin }){
 
     return(
         <div>
+            {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
             <h1>Username</h1>
-            {/* <InputField/> */}
-            <input placeholder="teacher username" onChange={(e) => {setUsername(e.target.value)}}></input>
+            <InputField/>
+            {/* <input placeholder="teacher username" onChange={(e) => {setUsername(e.target.value)}}></input> */}
             <h1>Password</h1>
-            <input placeholder="teacher password" onChange = {(e) => {setPassword(e.target.value)}}></input>
+            {/* <input placeholder="teacher password" onChange = {(e) => {setPassword(e.target.value)}}></input> */}
             <button onClick={handleEnter}>Press me</button>
         </div>
     )
