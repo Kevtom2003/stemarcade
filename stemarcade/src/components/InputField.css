@@ -1,0 +1,19 @@
+.retro-input{
+    border:0;
+    background-color: black;
+    color: white;
+    caret-color: transparent;
+}
+
+.retro-input:focus{
+    outline: none;
+    border: 2px solid transparent;
+    border-bottom-color: white;
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink{
+    50%{
+        border-bottom-color: transparent;
+    }
+}

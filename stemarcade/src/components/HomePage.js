@@ -33,7 +33,7 @@ export default function TeacherSelect(){
     }, [selected]);
 
     return(
-        <ArcadeOutline style = {{display:"flex", justifyContent: "center", alignItems: "center"}}>
+        <ArcadeOutline style = {{display:"flex", justifyContent: "center", alignItems: "center", zIndex: 0}}>
             { login === "" && (
 
                 <div>

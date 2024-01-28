@@ -10,7 +10,7 @@
   width: 100vw;
   height: 100vh;
   object-fit:fill;
-  z-index: 10;
+  z-index: -1;
 }
 
 .arcade-screen {
