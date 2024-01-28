@@ -1,5 +1,5 @@
 // GalagaGame.js
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
 import alien from "../images/rawalienhead.png"
@@ -11,11 +11,14 @@ import alien78 from "../images/78alien.png"
 import spacebg from "../images/spacebg.jpg"
 import { Keyboard } from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
+import { useNavigate } from "react-router-dom";
 
 
 
 const GalagaGame = () => {
   const appRef = useRef(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
 
@@ -69,19 +72,21 @@ const GalagaGame = () => {
     });
     const basicText = new PIXI.Text("Score: " + userScore, style);
 
-    basicText.x = 450;
-    basicText.y = 50;
+basicText.x = 1200;
+basicText.y = 50;
 
     const tipText = new PIXI.Text("", style);
 
-    tipText.x = 450;
-    tipText.y = 70;
-    let qCount = 0;
-    const problemText = new PIXI.Text(questionList[qCount], style);
-    problemText.x = 100;
-    problemText.y = 50;
+tipText.x = 450;
+tipText.y = 70;
+let qCount=0;
+const problemText = new PIXI.Text(questionList[qCount],style);
+problemText.x = 100;
+problemText.y = 50;
 
-    const gameOverText = new PIXI.Text("GAME OVER", style);
+const gameOverText = new PIXI.Text("" ,gameoverstyle);
+gameOverText.x=100;
+gameOverText.y=220;
 
     // Create a PIXI.Sprite with the desired texture
     const greenSquare = PIXI.Sprite.from(alien400);
@@ -94,19 +99,19 @@ const GalagaGame = () => {
     greenSquare.value = alienVals[0];
     greenSquare.speed = Math.random() * 5;
 
-    function getRandomPosition() {
-      const screenWidth = app.screen.width;
-      const screenHeight = app.screen.height * 0.7;
-      const x = Math.random() * (screenWidth - 100);
-      const y = Math.random() * screenHeight;
-      const v = Math.random() * 5;
-      return { x, y, v };
-    }
-    function distanceBetweenTwoPoints(point1, point2) {
-      const dx = point2.x - point1.x;
-      const dy = point2.y - point1.y;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
+function getRandomPosition() {
+    const screenWidth = app.screen.width;
+    const screenHeight = app.screen.height * 0.5;
+    const x = Math.random() * (screenWidth - 100);
+    const y = Math.random() * screenHeight;
+    const v = Math.random() * 3;
+    return { x, y, v };
+  }
+  function distanceBetweenTwoPoints(point1, point2) {
+    const dx = point2.x - point1.x;
+    const dy = point2.y - point1.y;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
     // Function to add green squares to the stage
     function addGreenSquares() {
         const minDistance = 150; // Minimum distance between aliens
@@ -353,95 +358,46 @@ const GalagaGame = () => {
           app.stage.removeChild(bullets[i]);
           bullets.splice(i, 1);
         }
-      }
-      basicText.text = "Score: " + score;
     }
+    basicText.text = "Score: " + score; 
+    if(qCount > 2){
+        gameEnd();
+    } 
+}
+function gameEnd() {
+    console.log("game over");
+    gameOverText.text = "YOU WIN!";
 
+    // Create buttons
+    const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+    homeButton.x = 100;
+    homeButton.y = 330;
+    homeButton.interactive = true;
+    homeButton.buttonMode = true;
+    homeButton.on("pointerdown", () => navigate("/galagaIntro"));
 
-    // Listen for animate update
-    // app.ticker.add((delta) =>
-    // {
-    //     // Applied deacceleration for both squares, done by reducing the
-    //     // acceleration by 0.01% of the acceleration every loop
-    //     redSquare.acceleration.set(redSquare.acceleration.x * 0.99, redSquare.acceleration.y * 0.99);
-    //     greenSquare.acceleration.set(greenSquare.acceleration.x * 0.99, greenSquare.acceleration.y * 0.99);
+    const playMoreButton = new PIXI.Text("Play More", style);
+    playMoreButton.x = 100;
+    playMoreButton.y = 380;
+    playMoreButton.interactive = true;
+    playMoreButton.buttonMode = true;
+    playMoreButton.on("pointerdown", () => {
+      // Handle the logic to restart the game or navigate to another game level
+      // For simplicity, let's just reload the page here
+      window.location.reload();
+    });
 
-    //     // Check whether the green square ever moves off the screen
-    //     // If so, reverse acceleration in that direction
-    //     if (greenSquare.x < 0 || greenSquare.x > (app.screen.width - 100))
-    //     {
-    //         greenSquare.acceleration.x = -greenSquare.acceleration.x;
-    //     }
+    app.stage.addChild(homeButton, playMoreButton);
+}
 
-    //     if (greenSquare.y < 0 || greenSquare.y > (app.screen.height - 100))
-    //     {
-    //         greenSquare.acceleration.y = -greenSquare.acceleration.y;
-    //     }
-
-    //     // If the green square pops out of the cordon, it pops back into the
-    //     // middle
-    //     if ((greenSquare.x < -30 || greenSquare.x > (app.screen.width + 30))
-    //         || greenSquare.y < -30 || greenSquare.y > (app.screen.height + 30))
-    //     {
-    //         greenSquare.position.set((app.screen.width - 100) / 2, (app.screen.height - 100) / 2);
-    //     }
-
-    //     // If the mouse is off screen, then don't update any further
-    //     if (app.screen.width > mouseCoords.x || mouseCoords.x > 0
-    //         || app.screen.height > mouseCoords.y || mouseCoords.y > 0)
-    //     {
-    //         // Get the red square's center point
-    //         const redSquareCenterPosition = new PIXI.Point(
-    //             redSquare.x + (redSquare.width * 0.5),
-    //             redSquare.y + (redSquare.height * 0.5),
-    //         );
-
-    //         // Calculate the direction vector between the mouse pointer and
-    //         // the red square
-    //         const toMouseDirection = new PIXI.Point(
-    //             mouseCoords.x - redSquareCenterPosition.x,
-    //             mouseCoords.y - redSquareCenterPosition.y,
-    //         );
-
-    //         // Use the above to figure out the angle that direction has
-    //         const angleToMouse = Math.atan2(
-    //             toMouseDirection.y,
-    //             toMouseDirection.x,
-    //         );
-
-    //         // Figure out the speed the square should be travelling by, as a
-    //         // function of how far away from the mouse pointer the red square is
-    //         const distMouseRedSquare = distanceBetweenTwoPoints(
-    //             mouseCoords,
-    //             redSquareCenterPosition,
-    //         );
-    //         const redSpeed = distMouseRedSquare * movementSpeed;
-
-    //         // Calculate the acceleration of the red square
-    //         redSquare.acceleration.set(
-    //             Math.cos(angleToMouse) * redSpeed,
-    //             Math.sin(angleToMouse) * redSpeed,
-    //         );
-    //     }
-
-    //     // If the two squares are colliding
-
-
-    //     greenSquare.x += greenSquare.acceleration.x * delta;
-    //     greenSquare.y += greenSquare.acceleration.y * delta;
-
-    //     redSquare.x += redSquare.acceleration.x * delta;
-    //     redSquare.y += redSquare.acceleration.y * delta;
-    // });
-
-    // Add to stage
-    if (app.stage) {
-      console.log("rendering");
-      app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText);
-      // app.stage.addChild(redSquare, greenSquare);
-    } else {
-      console.error('app.stage is null or undefined.');
-    }
+// Add to stage
+if (app.stage) {
+    console.log("rendering");
+    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText,gameOverText);
+   // app.stage.addChild(redSquare, greenSquare);
+  } else {
+    console.error('app.stage is null or undefined.');
+  }
     // Cleanup PIXI when the component unmounts
     return () => {
       app.destroy(true);

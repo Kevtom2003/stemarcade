@@ -7,15 +7,16 @@ import logo from "../images/mathvsmartianslogo.png";
 import bg from "../images/galagaintrobg.gif";
 import GalagaGame from "./galagaGame";
 
-export default function TeacherSelect() {
+export default function GalagaIntro() {
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Play');
 
     const navigate = useNavigate();
 
     const handleKeyDown = (event) => {
+
         if (event.keyCode === 40 || event.keyCode === 38) {
-            setSelected(selected === 'Play' ? 'Back' : 'Play');
+            setSelected(selected === 'Play' ? 'Quit' : 'Play');
         }
 
         if (event.key === 'Enter') {
@@ -54,10 +55,10 @@ export default function TeacherSelect() {
                 </div>
             )}
             {login === "Play" && (
-                <GalagaGame />
+                navigate("/galaga")
             )}
             {login === "Quit" && (
-                <TeacherSelect />
+                navigate("/")
             )}
         </ArcadeOutline>
     )
