@@ -46,33 +46,61 @@ app.get('/api/teacher/:username/:password', cors(), async (req, res) => {
 
 
 // student
-app.get('/api/student/"first_name"/"last_name"/"class_id"', cors(), async (req, res) => {
-    const { rows } = await pool.query('SELECT * FROM student WHERE first_name = $1 WHERE last_name = $2 WHERE class_id = $3', [req.params.first_name], [req.params.last_name], [req.params.class_id]);
-    res.send(rows);
+app.get('/api/student/:first_name/:last_name/:class_id', cors(), async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM student WHERE first_name = $1 AND last_name = $2 AND class_id = $3', [req.params.first_name, req.params.last_name, req.params.class_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
     }
-);
+});
+
 
 // CREATE
 // student
-app.post('/api/student/"first_name"/"last_name"/"class_id"', cors(), async (req, res) => {
-    const { rows } = await pool.query('INSERT INTO student (first_name, last_name, class_id) VALUES ($1, $2, $3)', [req.params.first_name], [req.params.last_name], [req.params.class_id]);
-    res.send(rows);
+app.post('/api/student/:first_name/:last_name/:class_id', cors(), async (req, res) => {
+    try{
+        const { rows } = await pool.query('INSERT INTO student (first_name, last_name, class_id) VALUES ($1, $2, $3)', [req.params.first_name], [req.params.last_name], [req.params.class_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
     }
-);
+});
 
 // assignment
-app.post('/api/assignment/name/description/class_id/game/target_score/due_date', cors(), async (req, res) => {
-    const { rows } = await pool.query('INSERT INTO assignment (name, description, class_id, game, due_date) VALUES ($1, $2, $3, $4, $5, $6)', [req.params.name], [req.params.description], [req.params.class_id], [req.params.game], [req.params.target_score], [req.params.due_date]);
-    res.send(rows);
+app.post('/api/assignment/:name/:description/:class_id/:game/:target_score/:due_date', cors(), async (req, res) => {
+    try{
+        const { rows } = await pool.query('INSERT INTO assignment (name, description, class_id, game, due_date) VALUES ($1, $2, $3, $4, $5, $6)', [req.params.name], [req.params.description], [req.params.class_id], [req.params.game], [req.params.target_score], [req.params.due_date]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
     }
-);
+});
 
 // class
-app.post('/api/class/class_name/teacher_id/grade', cors(), async (req, res) => {
-    const { rows } = await pool.query('INSERT INTO class (class_name, teacher_id, grade) VALUES ($1, $2, $3)', [req.params.class_name], [req.params.teacher_id], [req.params.grade]);
-    res.send(rows);
+app.post('/api/class/:class_name/:teacher_id/:grade', cors(), async (req, res) => {
+    try{
+        const { rows } = await pool.query('INSERT INTO class (class_name, teacher_id, grade) VALUES ($1, $2, $3)', [req.params.class_name], [req.params.teacher_id], [req.params.grade]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
     }
-);
+});
+
+// UPDATE
+app.post('/api/student_assignment/:student_id/:assignment_id/:score', cors(), async (req, res) => {
+    try{
+        const { rows } = await pool.query('UPDATE student_assignment SET score = $1 WHERE student_id = $2 AND assignment_id = $3', [req.params.score], [req.params.student_id], [req.params.assignment_id]);
+        res.send(rows);
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
 
 // host
