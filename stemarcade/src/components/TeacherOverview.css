@@ -1,112 +1,52 @@
-.screen{
+.screen {
     z-index: 1;
     margin: 5%;
     height: 100vh;
     text-align: center;
 }
 
-.teacher-options{
+.teacher-options {
     display: flex;
     justify-content: space-around;
 }
 
-.select-buttons{
+.select-buttons {
     display: flex;
     justify-content: center;
 }
 
-.select-package{
-    display: flex;
-    flex-direction: column;
+.select-package {
     margin: 1.25rem;
-}
-
-.student-leaderboard{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
-.student-table{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.student-leaderboard {
+    text-align: center;
+    margin-top: 1.5rem; /* Add margin for separation */
+}
+
+.table-container {
+    width: 80%;
+    margin: 0 auto;
+    overflow-x: auto;
 }
 
 .student-table {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50%; /* Adjust the width as needed */
-    margin: auto; /* Center the table horizontally */
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .student-table th,
 .student-table td {
-    padding: 8px; /* Adjust the padding as needed */
-    text-align: center; /* Center-align all table cell content */
+    padding: 8px;
+    text-align: center;
 }
 
-.student-table tr:first-child {
-    border-bottom: 2px solid #ddd; /* Add a border to the table bottom */
-}
-
-.student-table td:first-child {
-    text-align: left; /* Left-align the content in the first column (Student names) */
-}
-
-.student-table td:last-child {
-    text-align: right; /* Right-align the content in the last column (Scores) */
+.student-table th {
+    background-color: #535353;
 }
 
 .student-table tr:hover {
-    background-color: #5a5a5a; /* Add a grey background color to the table row on hover */
-}
-
-.teacher-select {
-    font-family: 'Press Start 2P', cursive; /* Use a retro gaming font */
-    padding: 8px 16px; /* Adjust padding as needed */
-    font-size: 16px; /* Adjust font size as needed */
-    background-color: #2b2b2b; /* Dark background color */
-    color: #fff; /* Text color */
-    border: 2px solid #fff; /* White border */
-    border-radius: 6px; /* Rounded corners */
-    appearance: none; /* Remove default dropdown arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer; /* Show pointer cursor */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition effects */
-}
-
-.teacher-select:hover,
-.teacher-select:focus {
-    background-color: #fff; /* Change background color on hover/focus */
-    color: #2b2b2b; /* Change text color on hover/focus */
-    border-color: #2b2b2b; /* Change border color on hover/focus */
-    outline: none; /* Remove outline */
-}
-
-/* Optional: Add box-shadow for depth effect */
-.teacher-select {
-    margin-top: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adjust shadow as needed */
-}
-
-.teacher-inputs {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 1.25rem;
-}
-
-.teacher-inputs label{
-    margin-right: 1rem;
-}
-
-.teacher-inputs input select{
-    margin-top: 1rem;
+    background-color: #535353;
 }

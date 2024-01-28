@@ -7,7 +7,7 @@ import StudentLogin from "./StudentLogin";
 import logo from "../images/stemarcadelogo.png";
 import bg from "../images/homepagebg3.gif";
 
-export default function TeacherSelect({ onTeacherLogin }){
+export default function TeacherSelect({ onTeacherLogin, onStudentLogin }){
 
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Student');
@@ -61,7 +61,7 @@ export default function TeacherSelect({ onTeacherLogin }){
                     <h1>{selected === "Student" ? ">Student" : "Student"}</h1>
                     <h1>{selected === "Teacher" ? ">Teacher" : "Teacher"}</h1>
                 </div>}
-                {login === 'Student' && <div><StudentLogin/> <NotA notA="student" onClick = {() => {setLogin("")}}/></div>}
+                {login === 'Student' && <div><StudentLogin onLogin={onStudentLogin}/> <NotA notA="student" onClick = {() => {setLogin("")}}/></div>}
                 {login === 'Teacher' && <div><TeacherLogin onLogin={onTeacherLogin}/> <NotA notA = "teacher" onClick={() => {setLogin("")}}/></div>}
           </div>
     );

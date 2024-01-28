@@ -139,6 +139,73 @@ app.post('/api/student_assignment/:student_id/:assignment_id/:score', cors(), as
     }
 });
 
+// update assignment scores
+
+// Record student scores
+// app.post('/api/recordScore/:student_id/:assignment_id/:score/:progress', cors(), async (req, res) => {
+//     try {
+//         const { student_id, assignment_id, score, progress } = req.params;
+
+//         // Check if the student has a previous score for this game
+//         const previousScoreResult = await pool.query(
+//             'SELECT score FROM student_assignment WHERE student_id = $1 AND assignment_id = $2',
+//             [student_id, assignment_id]
+//         );
+
+//         if (previousScoreResult.rows.length === 0 || score > previousScoreResult.rows[0].score) {
+//             // If no previous score or the new score is higher, update the score
+//             await pool.query(
+//                 'INSERT INTO student_assignment (student_id, assignment_id, score, progress) VALUES ($1, $2, $3, $4) ' +
+//                 'ON CONFLICT (student_id, assignment_id) DO UPDATE SET score = EXCLUDED.score',
+//                 [student_id, assignment_id, score, progress]
+//             );
+//         }
+
+//         res.status(200).send('Score recorded successfully.');
+//     } catch (error) {
+//         console.error('Error recording score:', error);
+//         res.status(500).send('Error recording score.');
+//     }
+// });
+
+app.post('/api/recordScore/:student_id/:assignment_id/:score/:progress', cors(), async (req, res) => {
+    try {
+        const { student_id, assignment_id, score, progress } = req.params;
+
+        // Check if the student has a previous score and progress for this assignment
+        const previousRecordResult = await pool.query(
+            'SELECT score, progress FROM student_assignment WHERE student_id = $1 AND assignment_id = $2',
+            [student_id, assignment_id]
+        );
+
+        const shouldUpdate = previousRecordResult.rows.length === 0 ||
+            score > previousRecordResult.rows[0].score ||
+            progress !== previousRecordResult.rows[0].progress;
+
+        if (shouldUpdate) {
+            // Update both score and progress
+            await pool.query(
+                'INSERT INTO student_assignment (student_id, assignment_id, score, progress) VALUES ($1, $2, $3, $4) ' +
+                'ON CONFLICT (student_id, assignment_id) DO UPDATE SET score = EXCLUDED.score, progress = EXCLUDED.progress',
+                [student_id, assignment_id, score, progress]
+            );
+        }
+
+        res.status(200).send({
+            message: 'Score and Progress recorded successfully.',
+            updated: shouldUpdate, // Indicate if any update happened
+        });
+    } catch (error) {
+        console.error('Error recording score and progress:', error);
+        res.status(500).send('Error recording score and progress.');
+    }
+});
+
+
+
+
+
+
 
 // host
 app.listen(5000, () => {

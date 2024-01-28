@@ -12,6 +12,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const [teacherId, setTeacherId] = React.useState("")
+  const [studentId, setStudentId] = React.useState("")
 
   useEffect(() => {
     if (teacherId !== "") {
@@ -19,12 +20,18 @@ const App = () => {
     }
   }, [teacherId]);
 
+  useEffect(() => {
+    if (studentId !== "") {
+      navigate(`/galagaIntro/${studentId}`);
+    }
+  }, [studentId]);
+
   return(
   <Routes>
-    <Route path = "/" element = {<HomePage onTeacherLogin={setTeacherId}/>}/>
-    <Route path = "/galaga" element = {<GalagaGame/>}/>
+    <Route path = "/" element = {<HomePage onStudentLogin={setStudentId} onTeacherLogin={setTeacherId}/>}/>
+    <Route path = "/galaga/:student_id" element = {<GalagaGame studentId={studentId}/>}/>
     <Route path = "/teacher/:teacher_id" element = {<TeacherOverview teacherId={teacherId}/>} />
-    <Route path = "/galagaIntro" element = {<GalagaIntro/>}/>
+    <Route path = "/galagaIntro/:student_id" element = {<GalagaIntro studentId={studentId}/>}/>
   </Routes>
   )
 }

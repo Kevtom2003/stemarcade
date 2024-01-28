@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const GalagaGame = () => {
+const GalagaGame = ( {studentId} ) => {
   const appRef = useRef(null);
   const navigate = useNavigate();
 
@@ -304,6 +304,9 @@ function updateBullet(delta){
 function gameEnd() {
   console.log("game over");
   gameOverText.text = "YOU WIN!";
+
+  updateDatabase(studentId, score);
+
   // Create buttons
   const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
   homeButton.x = 100;
@@ -322,6 +325,22 @@ function gameEnd() {
   });
 
   app.stage.addChild(homeButton, playMoreButton);
+}
+
+function updateDatabase(studentId, score) {
+  fetch(`http://localhost:5000/api/recordScore/${studentId}/${1}/${score}/${1}`, {
+    method: "POST", // Changed to POST
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error updating database:", error);
+    });
 }
 
 // Add to stage
