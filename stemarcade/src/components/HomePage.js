@@ -9,8 +9,6 @@ import bg from "../images/homepagebg3.gif";
 
 export default function TeacherSelect({ onTeacherLogin }){
 
-export default function TeacherSelect({ onTeacherLogin }){
-
     const [login, setLogin] = useState("");
     const [selected, setSelected] = useState('Student');
 
