@@ -67,11 +67,24 @@ const GalagaGame = () => {
 
     });
 
+    const responseStyle = new PIXI.TextStyle({
+      fontFamily:"mySecondFont",
+      fontSize: 36,
+      fill: ['#00FF00','#2a26ff']
+    });
+
     const gameoverstyle = new PIXI.TextStyle({
-      fill: ['#ffffff'],
-      fontSize: 100
+      fontFamily:"mySecondFont",
+      fontSize: 100,
+      fill: ['#00FF00','#2a26ff'],
+      align: "center"
 
     });
+    const startText = new PIXI.Text("Shoot the enemy alien \nwith the correct answer 5 times!", gameoverstyle);
+
+    startText.x = 125;
+    startText.y = 200;
+
     const basicText = new PIXI.Text("Score:   ", style);
 
     basicText.x = 1200;
@@ -87,9 +100,9 @@ const GalagaGame = () => {
     problemText.x = 100;
     problemText.y = 50;
 
-    const responseText = new PIXI.Text("", style);
-    responseText.x = 100;
-    responseText.y = 50;
+    const responseText = new PIXI.Text("", responseStyle);
+    responseText.x = 200;
+    responseText.y = 200;
 
     const gameOverText = new PIXI.Text("", gameoverstyle);
     gameOverText.x = 100;
@@ -137,7 +150,7 @@ const GalagaGame = () => {
       greenSquare.mass = 3;
       greenSquare.value = alienVals[1];
       aliens.push(greenSquare);
-      app.stage.addChild(greenSquare);
+      //app.stage.addChild(greenSquare);
 
       let position2 = getRandomPosition();
       while (aliens.some((alien) => distanceBetweenTwoPoints(position2, alien.position) < minDistance)) {
@@ -154,7 +167,7 @@ const GalagaGame = () => {
       greenSquare2.mass = 3;
       greenSquare2.value = alienVals[2];
       aliens.push(greenSquare2);
-      app.stage.addChild(greenSquare2);
+      //app.stage.addChild(greenSquare2);
 
       let position3 = getRandomPosition();
       while (aliens.some((alien) => distanceBetweenTwoPoints(position3, alien.position) < minDistance)) {
@@ -171,7 +184,7 @@ const GalagaGame = () => {
       greenSquare3.mass = 3;
       greenSquare3.value = alienVals[3];
       aliens.push(greenSquare3);
-      app.stage.addChild(greenSquare3);
+      //app.stage.addChild(greenSquare3);
 
       let position4 = getRandomPosition();
       while (aliens.some((alien) => distanceBetweenTwoPoints(position4, alien.position) < minDistance)) {
@@ -188,7 +201,7 @@ const GalagaGame = () => {
       greenSquare4.mass = 3;
       greenSquare4.value = alienVals[4];
       aliens.push(greenSquare4);
-      app.stage.addChild(greenSquare4);
+      //app.stage.addChild(greenSquare4);
 
     }
     addGreenSquares();
@@ -329,6 +342,7 @@ const GalagaGame = () => {
     }
     let tipTimeout;
     let responseTimeout;
+    let startTimeout;
 
     function updateBullet(delta) {
       for (let i = 0; i < bullets.length; i++) {
@@ -350,7 +364,7 @@ const GalagaGame = () => {
                   qCount += 1;
                   problemText.text = questionList[qCount];
                   responseText.text = "";
-                }, 7000); // Adjust the duration (in milliseconds) as needed
+                }, 5000); // Adjust the duration (in milliseconds) as needed
 
                 //qCount += 1;
                 //problemText.text = questionList[qCount];
@@ -408,6 +422,11 @@ const GalagaGame = () => {
     // Add to stage
     if (app.stage) {
       console.log("rendering");
+      app.stage.addChild(startText);
+      clearTimeout(startTimeout);
+                startTimeout = setTimeout(() => {
+                  startText.text = "";
+                }, 3000);
       app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText, gameOverText, responseText);
       // app.stage.addChild(redSquare, greenSquare);
     } else {
