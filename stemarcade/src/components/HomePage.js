@@ -41,10 +41,10 @@ export default function TeacherSelect(){
                 </div>
             )}
             { login === "Teacher" && (
-                <StudentLogin />
+                <TeacherLogin />
             )}
             { login === "Student" && (
-                <TeacherLogin />
+                <StudentLogin />
             )}
         </ArcadeOutline>
     )
