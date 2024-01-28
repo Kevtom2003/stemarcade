@@ -16,7 +16,7 @@ import './galagaGame.css';
 //import { setTimeout } from "timers/promises";
 
 
-const GalagaGame = () => {
+const GalagaGame = ( {studentId} ) => {
   const appRef = useRef(null);
   const navigate = useNavigate();
 
@@ -380,18 +380,21 @@ const GalagaGame = () => {
       
       if (qCount > 2) {
         gameEnd();
-      }
-    }
-    function gameEnd() {
-      console.log("game over");
-      gameOverText.text = "YOU WIN!";
-      // Create buttons
-      const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
-      homeButton.x = 100;
-      homeButton.y = 330;
-      homeButton.interactive = true;
-      homeButton.buttonMode = true;
-      homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+    } 
+}
+function gameEnd() {
+  console.log("game over");
+  gameOverText.text = "YOU WIN!";
+
+  updateDatabase(studentId, score);
+
+  // Create buttons
+  const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+  homeButton.x = 100;
+  homeButton.y = 330;
+  homeButton.interactive = true;
+  homeButton.buttonMode = true;
+  homeButton.on("pointerdown", () => navigate(`/galagaIntro/${studentId}`));
 
       const playMoreButton = new PIXI.Text("Play More", style);
       playMoreButton.x = 100;
@@ -405,14 +408,30 @@ const GalagaGame = () => {
       app.stage.addChild(homeButton, playMoreButton);
     }
 
-    // Add to stage
-    if (app.stage) {
-      console.log("rendering");
-      app.stage.addChild(basicText, tipText, redSquare, ...aliens, problemText, gameOverText, responseText);
-      // app.stage.addChild(redSquare, greenSquare);
-    } else {
-      console.error('app.stage is null or undefined.');
-    }
+function updateDatabase(studentId, score) {
+  fetch(`http://localhost:5000/api/recordScore/${studentId}/${1}/${score}/${1}`, {
+    method: "POST", // Changed to POST
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error updating database:", error);
+    });
+}
+
+// Add to stage
+if (app.stage) {
+    console.log("rendering");
+    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText,gameOverText, responseText);
+   // app.stage.addChild(redSquare, greenSquare);
+  } else {
+    console.error('app.stage is null or undefined.');
+  }
     // Cleanup PIXI when the component unmounts
     return () => {
       app.destroy(true);

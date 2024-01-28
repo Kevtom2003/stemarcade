@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import './TeacherLogin.css'
 
-export default function StudentLogin(){
+export default function StudentLogin( {onLogin}){
     const navigate = useNavigate();
 
     const [name, setName] = useState("");
@@ -35,6 +35,7 @@ export default function StudentLogin(){
         try{
             const res = await fetch(url);
             const q = await res.json();
+            onLogin(q[0].student_id);
             if(q.length > 0){
                 handleLogin();
             }else{
