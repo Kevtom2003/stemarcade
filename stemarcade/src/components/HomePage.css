@@ -10,6 +10,7 @@ body{
 }
 
 h1{
+    /* margin:1%; */
     color: rgb(255, 206, 28);
     font-family: "myFirstFont";
     text-shadow: 

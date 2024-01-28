@@ -5,16 +5,16 @@
     color: white;
     caret-color: transparent;
     font-size: 4vmin;
-
+    border: 5px solid transparent;
+    border-bottom-color: white;
+    border-style: dashed;
     margin:1%;
 }
 
 .inputField:focus{
     outline: none;
-    border: 5px solid transparent;
-    border-bottom-color: white;
-    border-style: dashed;
     animation: blink 1s step-start infinite;
+
 }
 
 @keyframes blink{
@@ -26,7 +26,7 @@
 .login-input {
     display: flex;
     justify-content: center;
-    padding: 1rem;
+    /* padding: 1rem; */
 }
 
 .login-input input {

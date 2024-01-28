@@ -6,6 +6,7 @@
 }
 
 .teacher-options {
+    marigin-top:10%;
     display: flex;
     justify-content: space-around;
 }
@@ -66,10 +67,36 @@
     transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
 }
 
-.select-package select:hover,
-.select-package select:focus {
-    background-color: #fff; 
-    color: #2b2b2b; 
-    border-color: #2b2b2b; 
-    outline: none; 
+.teacher-select:hover,
+.teacher-select:focus {
+    background-color: #fff; /* Change background color on hover/focus */
+    color: #2b2b2b; /* Change text color on hover/focus */
+    border-color: #2b2b2b; /* Change border color on hover/focus */
+    outline: none; /* Remove outline */
+}
+
+/* Optional: Add box-shadow for depth effect */
+.teacher-select {
+    margin-top: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adjust shadow as needed */
+}
+
+.teacher-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1.25rem;
+}
+
+.teacher-inputs label{
+    margin-right: 1rem;
+}
+
+.teacher-inputs input select{
+    margin-top: 1rem;
+}
+
+.clickable:hover{
+    cursor:pointer;
 }
