@@ -1,13 +1,16 @@
 // GalagaGame.js
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef} from "react";
 import * as PIXI from "pixi.js";
 import plane from "../images/mathspaceship.png"
 import {Keyboard} from 'pixi.js-keyboard';
 import { Text } from 'pixi.js';
+import { useNavigate } from "react-router-dom";
 
 
 
 const GalagaGame = () => {
+
+    const navigate = useNavigate();
   const appRef = useRef(null);
 
   useEffect(() => {
@@ -70,7 +73,9 @@ const problemText = new PIXI.Text(questionList[qCount],style);
 problemText.x = 100;
 problemText.y = 50;
 
-const gameOverText = new PIXI.Text("GAME OVER" ,style);
+const gameOverText = new PIXI.Text("" ,gameoverstyle);
+gameOverText.x=100;
+gameOverText.y=220;
 
 
 const greenSquare = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -293,14 +298,41 @@ function updateBullet(delta){
             bullets.splice(i,1);
         }
     }
-    basicText.text = "Score: " + score;  
+    basicText.text = "Score: " + score; 
+    if(qCount > 2){
+        gameEnd();
+    } 
 }
+function gameEnd() {
+    console.log("game over");
+    gameOverText.text = "YOU WIN!";
 
+    // Create buttons
+    const homeButton = new PIXI.Text("Take Me Back to Homepage", style);
+    homeButton.x = 100;
+    homeButton.y = 300;
+    homeButton.interactive = true;
+    homeButton.buttonMode = true;
+    homeButton.on("pointerdown", () => navigate("/galagaIntro"));
+
+    const playMoreButton = new PIXI.Text("Play More", style);
+    playMoreButton.x = 300;
+    playMoreButton.y = 300;
+    playMoreButton.interactive = true;
+    playMoreButton.buttonMode = true;
+    playMoreButton.on("pointerdown", () => {
+      // Handle the logic to restart the game or navigate to another game level
+      // For simplicity, let's just reload the page here
+      window.location.reload();
+    });
+
+    app.stage.addChild(homeButton, playMoreButton);
+}
 
 // Add to stage
 if (app.stage) {
     console.log("rendering");
-    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText);
+    app.stage.addChild(basicText,tipText,redSquare,...aliens,problemText,gameOverText);
    // app.stage.addChild(redSquare, greenSquare);
   } else {
     console.error('app.stage is null or undefined.');
