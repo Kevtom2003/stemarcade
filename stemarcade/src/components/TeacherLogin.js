@@ -49,7 +49,7 @@ export default function TeacherLogin(){
            }
 
     return(
-        <div>
+        <div style={{zIndex:10}}>
             {errorMessage && <div style = {{color:'red'}}>{errorMessage}</div>}
             <h1>Username</h1>
             <input ref = {inputRef}  onChange={(e) => {setUsername(e.target.value)}} className='inputField'></input>
