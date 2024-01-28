@@ -50,3 +50,26 @@
 .student-table tr:hover {
     background-color: #535353;
 }
+
+.select-package select {
+    margin-top: 0.5rem;
+    padding: 8px 12px; 
+    font-size: 16px; 
+    border: 2px solid #fff; /* White border */
+    border-radius: 6px; /* Rounded corners */
+    background-color: #2b2b2b; 
+    color: #fff; 
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer; 
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
+}
+
+.select-package select:hover,
+.select-package select:focus {
+    background-color: #fff; 
+    color: #2b2b2b; 
+    border-color: #2b2b2b; 
+    outline: none; 
+}

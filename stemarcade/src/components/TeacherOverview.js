@@ -5,7 +5,7 @@ import TeacherCreate from "./TeacherCreate";
 import TeacherUpdate from "./TeacherUpdate";
 
 export default function TeacherOverview({ teacherId }) {
-  const [currView, setCurrView] = useState("Create");
+  const [currView, setCurrView] = useState("View");
 
   const [classList, setClassList] = useState([]);
   const [assignmentList, setAssignmentList] = useState([]);
@@ -154,7 +154,7 @@ export default function TeacherOverview({ teacherId }) {
                         </table>
                     </div> */}
           <div className="student-leaderboard">
-            <h2>Student Leaderboard</h2>
+            <h2>Student Scores</h2>
             <div className="table-container">
               <table className="student-table">
                 <thead>
