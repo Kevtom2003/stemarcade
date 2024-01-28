@@ -85,7 +85,6 @@ export default function TeacherOverview({ teacherId }) {
   }
 
   return (
-    // <ArcadeOutline >
     <div className="screen">
       <div className="teacher-options">
         <h3 onClick={() => setCurrView("View")}>View</h3>
@@ -194,6 +193,5 @@ export default function TeacherOverview({ teacherId }) {
         </div>
       )}
     </div>
-    // </ArcadeOutline>
   );
 }
